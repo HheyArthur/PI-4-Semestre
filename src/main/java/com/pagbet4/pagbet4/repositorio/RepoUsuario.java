@@ -16,4 +16,6 @@ public interface RepoUsuario extends JpaRepository<Usuario, Long> {
 
     List<Usuario> findByAtivo(boolean b);
 
+    List<Usuario> findAllByNome(String nome);
+
 }

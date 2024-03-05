@@ -13,9 +13,9 @@ $(document).ready(function(){
       // Make AJAX request to backend
       $.ajax({
         type: 'POST',
-        url: '/login', // Coloque o URL correto do seu endpoint de login
+        url: 'http://localhost:8080/usuarios/login', // Coloque o URL correto do seu endpoint de login
         contentType: 'application/json',
-        data: JSON.stringify({ username: username, password: password }),
+        data: JSON.stringify({ email: username, senha: password }),
         success: function(response) {
           // Handle successful authentication
           alert('Login Successful!');
@@ -26,5 +26,5 @@ $(document).ready(function(){
         }
       });
     });
-  });
+  })
   

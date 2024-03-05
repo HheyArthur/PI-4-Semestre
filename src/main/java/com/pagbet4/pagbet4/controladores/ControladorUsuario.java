@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +24,9 @@ import com.pagbet4.pagbet4.repositorio.RepoUsuario;
 import io.micrometer.common.lang.NonNull;
 import jakarta.servlet.http.HttpSession;
 
+
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/usuarios")
 public class ControladorUsuario {
 
@@ -55,14 +58,6 @@ public class ControladorUsuario {
         }
         if (servicoEncriptarSenha.verificarSenha(usuario.getSenha(), usuarioEncontrado.getSenha())) {
             session.setAttribute("usuario", usuarioEncontrado); // Armazena o usuário na sessão
-
-            // Verificar o nível de acesso do usuário
-            if (usuarioEncontrado.getFuncao().equals("administrador")) {
-                session.setAttribute("nivelAcesso", "admin");
-            } else {
-                session.setAttribute("nivelAcesso", "estoquista");
-            }
-
             return ResponseEntity.ok("Usuário logado com sucesso");
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Senha incorreta");
@@ -114,9 +109,41 @@ public class ControladorUsuario {
         }
     }
 
-    @GetMapping("/getUser")
-    public @NonNull Usuario getUsuarioById(@PathVariable @NonNull String nome) {
-        return repoUsuario.findByNome(nome);
+
+    //Retorna as informações dos usuários com base no nome
+    @GetMapping("/getUser/{nome}")
+    public List<Usuario> getUsuariosByNome(@PathVariable @NonNull String nome) {
+        return repoUsuario.findAllByNome(nome);
+    }
+
+    //Desativa e ativa o usuário, com base no email
+    @PutMapping("/desativarAtivarUsuario/{email}")
+    public ResponseEntity<?> ativarDesativarUsuario(@PathVariable String email) {
+        
+        Usuario usuarioEncontrado = repoUsuario.findByEmail(email);
+        if (usuarioEncontrado == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
+        } else if (usuarioEncontrado.getAtivo() == false) {
+            usuarioEncontrado.setAtivo(true);
+            repoUsuario.save(usuarioEncontrado);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body("Usuário ativado");
+        } else {
+            usuarioEncontrado.setAtivo(false);
+            repoUsuario.save(usuarioEncontrado);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body("Usuário desativado");
+        }
+    }
+
+
+    //Retorna a função do usuário, utilizar para redirecionar para a página correta
+    @GetMapping("/funcao/{nome}")
+    public ResponseEntity<?> getFuncao(@PathVariable String nome) {
+        Usuario usuarioEncontrado = repoUsuario.findByNome(nome);
+        if (usuarioEncontrado == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
+        }
+        return ResponseEntity.ok(usuarioEncontrado.getFuncao());
+
     }
 
     @PutMapping("/alterarSenha/{id}")
