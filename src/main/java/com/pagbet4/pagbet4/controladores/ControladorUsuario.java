@@ -1,20 +1,27 @@
 package com.pagbet4.pagbet4.controladores;
 
-import com.pagbet4.pagbet4.encriptador.ServicoEncriptarSenha;
-import com.pagbet4.pagbet4.entidades.Usuario;
-import com.pagbet4.pagbet4.repositorio.RepoUsuario;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.pagbet4.pagbet4.encriptador.ServicoEncriptarSenha;
+import com.pagbet4.pagbet4.entidades.Usuario;
+import com.pagbet4.pagbet4.repositorio.RepoUsuario;
+
+import io.micrometer.common.lang.NonNull;
+import jakarta.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -35,27 +42,69 @@ public class ControladorUsuario {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody Usuario usuario) {
-        Usuario usuarioEncontrado = repoUsuario.findByNome(usuario.getNome());
-        if (usuarioEncontrado != null && usuario.getAtivo() == true) {
-            if (servicoEncriptarSenha.verificarSenha(usuario.getSenha(), usuarioEncontrado.getSenha())) {
-                return ResponseEntity.ok("Usuário logado com sucesso");
+    public ResponseEntity<String> login(@RequestBody Usuario usuario, HttpSession session) {
+        Usuario usuarioEncontrado = repoUsuario.findByEmail(usuario.getEmail());
+        if (usuarioEncontrado == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário não encontrado");
+        }
+        if (!usuarioEncontrado.getAtivo()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário inativo");
+        }
+        if (isUsuarioLogado(usuarioEncontrado, session)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário já está em uma sessão ativa");
+        }
+        if (servicoEncriptarSenha.verificarSenha(usuario.getSenha(), usuarioEncontrado.getSenha())) {
+            session.setAttribute("usuario", usuarioEncontrado); // Armazena o usuário na sessão
+
+            // Verificar o nível de acesso do usuário
+            if (usuarioEncontrado.getFuncao().equals("administrador")) {
+                session.setAttribute("nivelAcesso", "admin");
+            } else {
+                session.setAttribute("nivelAcesso", "estoquista");
+            }
+
+            return ResponseEntity.ok("Usuário logado com sucesso");
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Senha incorreta");
+        }
+    }
+
+    private boolean isUsuarioLogado(Usuario usuario, HttpSession session) {
+        Enumeration<String> sessionAttributeNames = session.getAttributeNames();
+        while (sessionAttributeNames.hasMoreElements()) {
+            String attributeName = sessionAttributeNames.nextElement();
+            Object attributeValue = session.getAttribute(attributeName);
+            if (attributeValue instanceof Usuario && ((Usuario) attributeValue).getId().equals(usuario.getId())) {
+                return true;
             }
         }
-        if (usuario.getAtivo() == false) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário inativo");
+        return false;
+    }
 
+    @GetMapping("/checkSession")
+    public ResponseEntity<List<Usuario>> checkSession(HttpSession session) {
+        List<Usuario> usuariosLogados = new ArrayList<>();
+        Enumeration<String> sessionAttributeNames = session.getAttributeNames();
+        while (sessionAttributeNames.hasMoreElements()) {
+            String attributeName = sessionAttributeNames.nextElement();
+            Object attributeValue = session.getAttribute(attributeName);
+            if (attributeValue instanceof Usuario) {
+                usuariosLogados.add((Usuario) attributeValue);
+            }
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário ou senha inválidos");
-
+        return ResponseEntity.ok(usuariosLogados);
     }
 
     @PostMapping("/cadastro")
     public ResponseEntity<?> addUsuario(@RequestBody Usuario usuario) {
+        Usuario usuarioEncontrado = repoUsuario.findByEmail(usuario.getEmail());
+        if (usuarioEncontrado != null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Já existe um usuário cadastrado com esse email");
+        }
         if (usuario.getSenha() != null || !usuario.getSenha().isEmpty() && usuario.getCpf() != null
                 || String.valueOf(usuario.getCpf()).length() == 11 && usuario.getNome() != null
                 || !usuario.getNome().isEmpty() && usuario.getEmail() != null
-                || !usuario.getEmail().isEmpty() && usuario.getAtivo() != null) {
+                || !usuario.getEmail().isEmpty() && usuario.getFuncao() != null || !usuario.getFuncao().isEmpty()){
             String senhaEncoded = servicoEncriptarSenha.encriptarSenha(usuario.getSenha());
             usuario.setSenha(senhaEncoded);
 
@@ -65,60 +114,50 @@ public class ControladorUsuario {
         }
     }
 
-    @GetMapping("/getUser/{id}")
-    public Usuario getUsuarioById(@PathVariable Long id) {
-        return repoUsuario.findById(id).orElse(null);
+    @GetMapping("/getUser")
+    public @NonNull Usuario getUsuarioById(@PathVariable @NonNull String nome) {
+        return repoUsuario.findByNome(nome);
+    }
+
+    @PutMapping("/alterarSenha/{id}")
+    public ResponseEntity<String> alterarSenha(@PathVariable @NonNull Long id,
+            @RequestBody @NonNull Usuario updateSenhaUsuario) {
+        Usuario usuarioEncontrado = repoUsuario.findById(id).orElse(null);
+        String novaSenha = updateSenhaUsuario.getSenha();
+
+        if (id == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("O ID não pode ser nulo");
+        } else if (usuarioEncontrado == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
+        } else if (novaSenha == null || novaSenha.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("A senha não pode ser nula ou vazia");
+        }
+
+        usuarioEncontrado.setSenha(servicoEncriptarSenha.encriptarSenha(novaSenha));
+        repoUsuario.save(usuarioEncontrado);
+
+        return ResponseEntity.ok("Senha alterada com sucesso.");
     }
 
     @PutMapping("/updateUser/{id}")
-    public Usuario updateUsuario(@PathVariable Long id, @PathVariable Long cpf, @PathVariable String nome, @RequestBody Usuario updateUsuario) {
-        if (repoUsuario.existsById(id)) {
-            updateUsuario.setId(id);
-            updateUsuario.setCpf(cpf);
-            updateUsuario.setNome(nome);
-            return repoUsuario.save(updateUsuario);
+    public ResponseEntity<?> updateUsuario(@PathVariable @NonNull Long id, @RequestBody @NonNull Usuario updateUsuario) {
+        if (id == null || updateUsuario == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ID ou Usuario não podem ser nulos");
         }
-        return null;
-    }
-
-    @PutMapping("/desativaUsuario/{id}")
-    public Usuario desativaUsuario(@PathVariable Long id, @RequestBody Usuario desativaUsuario) {
-        if (repoUsuario.existsById(id)) {
-
-            desativaUsuario.setAtivo(false);
-
-            desativaUsuario.setId(id);
-            desativaUsuario.setNome(desativaUsuario.getNome());
-            desativaUsuario.setCpf(desativaUsuario.getCpf());
-            desativaUsuario.setEmail(desativaUsuario.getEmail());
-            desativaUsuario.setSenha(desativaUsuario.getSenha());
-            desativaUsuario.setFuncao(desativaUsuario.getFuncao());
-
-            return repoUsuario.save(desativaUsuario);
+        Usuario existingUsuario = repoUsuario.findById(id).orElse(null);
+        if (existingUsuario != null && updateUsuario.getNome() != null && !updateUsuario.getNome().isEmpty()
+                && updateUsuario.getCpf() != null && !String.valueOf(updateUsuario.getCpf()).isEmpty()
+                && updateUsuario.getFuncao() != null && !updateUsuario.getFuncao().isEmpty()){
+            existingUsuario.setFuncao(updateUsuario.getFuncao());
+            existingUsuario.setCpf(updateUsuario.getCpf());
+            existingUsuario.setAtivo(updateUsuario.getAtivo());
+            existingUsuario.setNome(updateUsuario.getNome());
+            return ResponseEntity.ok(repoUsuario.save(existingUsuario));
         }
-        return null;
-    }
-
-    @PutMapping("/ativarUsuario/{id}")
-    public Usuario ativarUsuario(@PathVariable Long id, @RequestBody Usuario ativaUsuario) {
-        if (repoUsuario.existsById(id)) {
-
-            ativaUsuario.setAtivo(true);
-
-            ativaUsuario.setNome(ativaUsuario.getNome());
-            ativaUsuario.setCpf(ativaUsuario.getCpf());
-            ativaUsuario.setEmail(ativaUsuario.getEmail());
-            ativaUsuario.setSenha(ativaUsuario.getSenha());
-            ativaUsuario.setFuncao(ativaUsuario.getFuncao());
-
-            return repoUsuario.save(ativaUsuario);
-        }
-
-        return null;
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Dados inválidos");
     }
 
     @DeleteMapping("/deleteUser/{id}")
-
     public void deletaUsuario(@PathVariable Long id) {
         repoUsuario.deleteById(id);
     }
@@ -126,12 +165,12 @@ public class ControladorUsuario {
     @DeleteMapping("/deleteAllSemSenha")
     public void deletaUsuarioSemSenha() {
         List<Usuario> usuarios = getAllUsuario();
-        for (Usuario usuario : usuarios) {
-            if (usuario != null && usuario.getSenha() == null || usuario.getSenha().isEmpty()) {
-                Usuario usuarioDeletar = repoUsuario.findById(usuario.getId()).orElse(null);
-                repoUsuario.delete(usuarioDeletar);
-            }
-        }
+        usuarios.stream()
+                .filter(usuario -> usuario != null && (usuario.getSenha() == null || usuario.getSenha().isEmpty()))
+                .forEach(usuario -> {
+                    Usuario usuarioDeletar = repoUsuario.findById(usuario.getId()).orElse(null);
+                    repoUsuario.delete(usuarioDeletar);
+                });
     }
 
 }
