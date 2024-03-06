@@ -19,11 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pagbet4.pagbet4.encriptador.ServicoEncriptarSenha;
 import com.pagbet4.pagbet4.entidades.Usuario;
+import com.pagbet4.pagbet4.entidades.UsuarioInfo;
 import com.pagbet4.pagbet4.repositorio.RepoUsuario;
 
 import io.micrometer.common.lang.NonNull;
 import jakarta.servlet.http.HttpSession;
-
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -99,7 +99,7 @@ public class ControladorUsuario {
         if (usuario.getSenha() != null || !usuario.getSenha().isEmpty() && usuario.getCpf() != null
                 || String.valueOf(usuario.getCpf()).length() == 11 && usuario.getNome() != null
                 || !usuario.getNome().isEmpty() && usuario.getEmail() != null
-                || !usuario.getEmail().isEmpty() && usuario.getFuncao() != null || !usuario.getFuncao().isEmpty()){
+                || !usuario.getEmail().isEmpty() && usuario.getFuncao() != null || !usuario.getFuncao().isEmpty()) {
             String senhaEncoded = servicoEncriptarSenha.encriptarSenha(usuario.getSenha());
             usuario.setSenha(senhaEncoded);
 
@@ -109,17 +109,16 @@ public class ControladorUsuario {
         }
     }
 
-
-    //Retorna as informações dos usuários com base no nome
+    // Retorna as informações dos usuários com base no nome
     @GetMapping("/getUser/{nome}")
     public List<Usuario> getUsuariosByNome(@PathVariable @NonNull String nome) {
         return repoUsuario.findAllByNome(nome);
     }
 
-    //Desativa e ativa o usuário, com base no email
+    // Desativa e ativa o usuário, com base no email
     @PutMapping("/desativarAtivarUsuario/{email}")
     public ResponseEntity<?> ativarDesativarUsuario(@PathVariable String email) {
-        
+
         Usuario usuarioEncontrado = repoUsuario.findByEmail(email);
         if (usuarioEncontrado == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
@@ -134,8 +133,28 @@ public class ControladorUsuario {
         }
     }
 
+    @GetMapping("/usuariosInfo")
+    public ResponseEntity<List<UsuarioInfo>> getUsuariosInfo() {
+        try {
+            List<Usuario> usuarios = repoUsuario.findAll();
+            List<UsuarioInfo> usuariosInfo = new ArrayList<>();
 
-    //Retorna a função do usuário, utilizar para redirecionar para a página correta
+            for (Usuario usuario : usuarios) {
+                UsuarioInfo usuarioInfo = new UsuarioInfo();
+                usuarioInfo.setNome(usuario.getNome());
+                usuarioInfo.setEmail(usuario.getEmail());
+                usuarioInfo.setFuncao(usuario.getFuncao());
+                usuarioInfo.setAtivo(usuario.getAtivo());
+                usuariosInfo.add(usuarioInfo);
+            }
+
+            return ResponseEntity.ok(usuariosInfo);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    // Retorna a função do usuário, utilizar para redirecionar para a página correta
     @GetMapping("/funcao/{nome}")
     public ResponseEntity<?> getFuncao(@PathVariable String nome) {
         Usuario usuarioEncontrado = repoUsuario.findByNome(nome);
@@ -167,14 +186,15 @@ public class ControladorUsuario {
     }
 
     @PutMapping("/updateUser/{id}")
-    public ResponseEntity<?> updateUsuario(@PathVariable @NonNull Long id, @RequestBody @NonNull Usuario updateUsuario) {
+    public ResponseEntity<?> updateUsuario(@PathVariable @NonNull Long id,
+            @RequestBody @NonNull Usuario updateUsuario) {
         if (id == null || updateUsuario == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ID ou Usuario não podem ser nulos");
         }
         Usuario existingUsuario = repoUsuario.findById(id).orElse(null);
         if (existingUsuario != null && updateUsuario.getNome() != null && !updateUsuario.getNome().isEmpty()
                 && updateUsuario.getCpf() != null && !String.valueOf(updateUsuario.getCpf()).isEmpty()
-                && updateUsuario.getFuncao() != null && !updateUsuario.getFuncao().isEmpty()){
+                && updateUsuario.getFuncao() != null && !updateUsuario.getFuncao().isEmpty()) {
             existingUsuario.setFuncao(updateUsuario.getFuncao());
             existingUsuario.setCpf(updateUsuario.getCpf());
             existingUsuario.setAtivo(updateUsuario.getAtivo());
