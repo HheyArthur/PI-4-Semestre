@@ -1,6 +1,6 @@
   function loginUser() {
     var email = document.getElementById("typeEmailX").value;
-    var password = document.getElementById("senha").value;
+    var senha = document.getElementById("senha").value;
 
     var user = {
       email: email,
