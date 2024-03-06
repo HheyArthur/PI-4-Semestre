@@ -9,7 +9,7 @@ function carregarUsuarios() {
 				newRow.append('<td>' + usuario.nome + '</td>');
 				newRow.append('<td>' + usuario.email + '</td>');
 				newRow.append('<td>' + (usuario.funcao ? usuario.funcao : '') + '</td>');
-				newRow.append('<td>' + (usuario.ativo ? 'Ativo' : 'Inativo') + '</td>');
+				newRow.append('<td class="acao ativo">' + (usuario.ativo ? 'Ativo' : 'Inativo') + '</td>');
 				newRow.append('<td class="acao editar" data-id="' + usuario.id + '">Editar</td>');
 				newRow.append('<td class="acao excluir" data-id="' + usuario.id + '">Excluir</td>');
 				$('tbody').append(newRow);
@@ -196,5 +196,26 @@ $(document).on('click', '.editar', function () {
 			}
 		});
 	});
+});
+
+$(document).on('click', '.ativo', function () {
+    var email = $(this).closest('tr').find('td:nth-child(2)').text();
+    console.log(email);
+    if (email) {
+        $.ajax({
+            url: 'http://localhost:8080/usuarios/desativarAtivarUsuario/' + email, // URL do endpoint para ativar/desativar usuário
+            method: 'PUT',
+            success: function (data) {
+                alert("Status do usuário atualizado com sucesso.");
+                carregarUsuarios(); // Atualiza a lista de usuários após a atualização
+            },
+            error: function (error) {
+                console.error('Erro ao atualizar status do usuário:', error);
+                alert("Erro ao atualizar status do usuário. Por favor, tente novamente.");
+            }
+        });
+    } else {
+        alert("Email do usuário não encontrado.");
+    }
 });
 
