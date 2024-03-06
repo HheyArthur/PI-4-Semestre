@@ -109,10 +109,10 @@ public class ControladorUsuario {
         }
     }
 
-    // Retorna as informações dos usuários com base no nome
-    @GetMapping("/getUser/{nome}")
-    public List<Usuario> getUsuariosByNome(@PathVariable @NonNull String nome) {
-        return repoUsuario.findAllByNome(nome);
+    // Retorna as informações do usuário com base no email
+    @GetMapping("/getUser/{email}")
+    public Usuario getUsuarioByEmail(@PathVariable @NonNull String email) {
+        return repoUsuario.findByEmail(email);
     }
 
     // Desativa e ativa o usuário, com base no email
@@ -185,13 +185,13 @@ public class ControladorUsuario {
         return ResponseEntity.ok("Senha alterada com sucesso.");
     }
 
-    @PutMapping("/updateUser/{id}")
-    public ResponseEntity<?> updateUsuario(@PathVariable @NonNull Long id,
+    @PutMapping("/updateUser/{email}")
+    public ResponseEntity<?> updateUsuario(@PathVariable @NonNull String email,
             @RequestBody @NonNull Usuario updateUsuario) {
-        if (id == null || updateUsuario == null) {
+        if (email == null || updateUsuario == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ID ou Usuario não podem ser nulos");
         }
-        Usuario existingUsuario = repoUsuario.findById(id).orElse(null);
+        Usuario existingUsuario = repoUsuario.findByEmail(email);
         if (existingUsuario != null && updateUsuario.getNome() != null && !updateUsuario.getNome().isEmpty()
                 && updateUsuario.getCpf() != null && !String.valueOf(updateUsuario.getCpf()).isEmpty()
                 && updateUsuario.getFuncao() != null && !updateUsuario.getFuncao().isEmpty()) {
@@ -204,9 +204,10 @@ public class ControladorUsuario {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Dados inválidos");
     }
 
-    @DeleteMapping("/deleteUser/{id}")
-    public void deletaUsuario(@PathVariable Long id) {
-        repoUsuario.deleteById(id);
+    @DeleteMapping("/deleteUser/{email}")
+    public void deletaUsuario(@PathVariable String email) {
+        Usuario usuarioDeletar = repoUsuario.findByEmail(email);
+        repoUsuario.delete(usuarioDeletar);
     }
 
     @DeleteMapping("/deleteAllSemSenha")
