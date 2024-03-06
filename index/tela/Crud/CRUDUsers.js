@@ -48,4 +48,6 @@ $(document).ready(function () {
 
 	// Aqui você pode adicionar mais funcionalidades, como adicionar um novo usuário,
 	// editar ou excluir um usuário, utilizando AJAX para se comunicar com o backend.
+
+
 });

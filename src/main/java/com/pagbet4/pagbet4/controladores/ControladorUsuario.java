@@ -92,8 +92,8 @@ public class ControladorUsuario {
 
     @PostMapping("/cadastro")
     public ResponseEntity<?> addUsuario(@RequestBody Usuario usuario) {
-        Usuario usuarioEncontrado = repoUsuario.findByEmail(usuario.getEmail());
-        if (usuarioEncontrado != null) {
+        List<Usuario> usuariosComMesmoEmail = repoUsuario.findAllByEmail(usuario.getEmail());
+        if (!usuariosComMesmoEmail.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Já existe um usuário cadastrado com esse email");
         }
         if (usuario.getSenha() != null || !usuario.getSenha().isEmpty() && usuario.getCpf() != null

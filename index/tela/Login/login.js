@@ -17,7 +17,7 @@
         console.log("Login successful!" + response);
       },
       error: function (xhr, status, erro) {
-        console.lo("Erro: " + erro + " Status: " + status + " " + xhr.responseText);
+        console.log("Erro: " + erro + " Status: " + status + " " + xhr.responseText);
       }
     });
   }

@@ -18,4 +18,6 @@ public interface RepoUsuario extends JpaRepository<Usuario, Long> {
 
     List<Usuario> findAllByNome(String nome);
 
+    List<Usuario> findAllByEmail(String email);
+
 }
