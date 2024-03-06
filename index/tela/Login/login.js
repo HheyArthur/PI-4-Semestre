@@ -15,9 +15,10 @@
       contentType: "application/json",
       success: function (response) {
         console.log("Login successful!" + response);
+        Openmodal();
       },
       error: function (xhr, status, erro) {
-        console.log("Erro: " + erro + " Status: " + status + " " + xhr.responseText);
+        alert("Erro ao logar: " + xhr.responseText);
       }
     });
   }
@@ -28,7 +29,7 @@
   }
 
 
-  function Closemodal() {
+  function CloseModal() {
     document.getElementById("myPopup").style.display = "none";
   }
 
