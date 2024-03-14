@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD</title>
+    <link rel="stylesheet" href="../CSS/CRUDUsers.css">
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+    
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <span>Lista de Usuarios</span>
+            <button onclick="openModal()" class ="btnSuperior" id="new">Incluir</i></button>
+        </div>
+        <div class="divTable">
+            <table>
+                <thead>
+                    <tr>
+
+                        <th>Nome</th>
+                        <th>Email</th>
+                        <th>Grupo</th>
+                        <th class="acao">Status</th>
+                        <th class="acao">Editar</th>
+                        <th class="acao">Excluir</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-container">
+            <div class="modal">
+                <form id="usuarioForm">
+                    <label for="m-nome">Nome</label>
+                    <input id="m-nome" pattern="[a-zA-Z\s]+" type="text" required />
+                    <label for="m-cpf">CPF</label>
+                    <input id="m-cpf" type="text" autocomplete="off" maxlength="14" placeholder="Ex: 123.456.789-01" required />
+                    <label for="m-email">Email</label>
+                    <input id="m-email" type="email" required />
+                    <label for="m-senha">Senha</label>
+                    <input id="m-senha" type="password" required />
+                    <label for="m-confirmar-senha">Confirmar Senha</label>
+                    <input id="m-confirmar-senha" type="password" required />
+                    <label>
+                        <span><b>Grupo:</b></span>
+                        <select id="m-grupo" required>
+                            <option value="admin">Administrador</option>
+                            <option value="estoquista">Estoquista</option>
+                            <option value="cliente">Cliente</option>
+                        </select>
+                    </label>
+                    <button type="submit">Salvar</button>
+                    <button type="button" onclick="fecharModal()">Fechar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="../scripts/CRUDUsers.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+<script> //validalçoes de campo
+    $('#m-cpf ').mask('000.000.000-00', { reverse: true });
+
+</script>
+
+</body>
+
+</html>
