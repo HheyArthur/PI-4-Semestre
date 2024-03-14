@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login Pag Bet 4</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css	">
+    <link rel="stylesheet" href="../CSS/login.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css	">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js	">
+<body>
+    <section class="vh-100 gradient-custom" id="Login">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                    <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                        <div class="card-body p-5 text-center">
+                            <div class="mb-md-5 mt-md-4 pb-5">
+                                <h2 class="fw-bold mb-2 text-uppercase">Login</h2>
+                                <p class="text-white-50 mb-5">Digite seu email e senha!</p>
+                                <div class="form-outline form-white mb-4">
+                                    <input type="email" id="typeEmailX" class="form-control form-control-lg" />
+                                    <label class="form-label" for="typeEmailX">Email</label>
+                                </div>
+                                <div class="form-outline form-white mb-4">
+                                    <input type="password" id="senha" class="form-control form-control-lg" />
+                                    <label class="form-label" id="typePasswordX" for="typePasswordX">Senha</label>
+                                </div>
+                                <p class="small mb-5 pb-lg-2"><a class="text-white-50" href="#!">Esqueceu sua senha?</a>
+                                </p>
+                                <button class="btn btn-outline-light btn-lg px-5" type="submit"
+                                    onclick="loginUser()" id="loginBtn">Login</button>
+                                <div class="d-flex justify-content-center text-center mt-4 pt-1">
+                                    <a href="#!" class="text-white"><i class="fab fa-facebook-f fa-lg"></i></a>
+                                    <a href="#!" class="text-white"><i class="fab fa-twitter fa-lg mx-4 px-2"></i></a>
+                                    <a href="#!" class="text-white"><i class="fab fa-google fa-lg"></i></a>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="mb-0">Não tem uma conta? <a href="#!" class="text-white-50 fw-bold">Cadastre-se</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="myPopup" class="popup">
+            <div class="popup-content">
+                <button class="close-button" onclick="CloseModal()">&times;</button>
+                <div class="container section-container">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card-section2">
+                                <h2 class=" card-title">
+                                    <button class="card-section2">
+                                        <a href="../HTML/CRUDUsers.html">
+                                            Lista de Usuários
+                                        </a>
+                                    </button>
+                                </h2>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card-section2">
+                                <h2 class="card-title">Lista de Produtos</h2>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card-section2">
+                                <h2 class="card-title">Lista de Pedidos</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="../scripts/login.js"></script>
+</body>
+</html>
