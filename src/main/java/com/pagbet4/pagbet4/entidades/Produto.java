@@ -17,7 +17,7 @@ public class Produto {
 
     private String nomeProduto;
     private String descricao;
-    private String imagem;
+    private String imagem = "..\\index\\img\\imagem_indisponivel.png";//imagem indisponivel por padrão
 
     private long codigo = 1000 + (Math.round(Math.random() * 9000));
     private long quantidade;

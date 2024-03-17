@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pagbet4.pagbet4.entidades.Produto;
 import com.pagbet4.pagbet4.repositorio.RepoProduto;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -39,6 +41,13 @@ public class ControladorProduto {
     public Produto listarProduto(@PathVariable Long id) {
         return repoProduto.findById(id).get();
     }
+
+    @GetMapping("/pesquisa/{nome}")
+    public List<Produto> pesquisaProdutoNome(@PathVariable String nome) {
+        List<Produto> produtos = repoProduto.findAllByNomeProdutoContaining(nome);
+        return produtos;
+    }
+    
 
     @PostMapping("/cadastrar")
     public ResponseEntity<?> criarProduto(@RequestBody Produto produto) {
