@@ -1,6 +1,7 @@
 package com.pagbet4.pagbet4.repositorio;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -11,5 +12,7 @@ public interface RepoProduto extends JpaRepository<Produto, Long>{
     List<Produto> findAllByNomeProduto(String nome);
 
     List<Produto> findAllByNomeProdutoContaining(String nome);
+
+    Optional<Produto> findByNomeProduto(String nomeProduto);
     
 }

@@ -34,7 +34,7 @@ CREATE TABLE `produto` (
   `qtd_avaliacoes` bigint NOT NULL,
   `imagem` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `produto` (
 
 LOCK TABLES `produto` WRITE;
 /*!40000 ALTER TABLE `produto` DISABLE KEYS */;
-INSERT INTO `produto` VALUES (1,_binary '',0,3554,'Descrição pendente','Cartela de Bingo sem número',1.99,1000,0,NULL),(2,_binary '',0,4766,'Descrição pendente','Cartela de Bingo simples',1.99,1,0,NULL),(3,_binary '',0,4058,'Descrição pendente','Cartela de Bingo simples 2',1.99,1,0,'..\\index\\img\\cartela_bingo.png');
+INSERT INTO `produto` VALUES (1,_binary '',0,3554,'Descrição pendente','Cartela de Bingo sem número',1.99,1000,0,'..\\index\\img\\bingo_cartela2.webp'),(2,_binary '',0,4766,'Descrição pendente','Cartela de Bingo colorida',2.99,5,0,'..\\index\\img\\bingo_cartela3.webp'),(3,_binary '',0,4058,'Descrição pendente','Cartela de Bingo simples 2',1.99,1,0,'..\\index\\img\\cartela_bingo.png'),(4,_binary '',0,1048,'Descrição pendente','Cartela de Bingo simples 3',1.99,1,0,'..\\index\\img\\bingo_cartela4.webp');
 /*!40000 ALTER TABLE `produto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -85,4 +85,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-17 15:16:47
+-- Dump completed on 2024-03-17 18:41:07

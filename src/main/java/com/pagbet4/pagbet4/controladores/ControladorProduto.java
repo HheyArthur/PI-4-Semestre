@@ -3,6 +3,7 @@ package com.pagbet4.pagbet4.controladores;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -69,10 +70,96 @@ public class ControladorProduto {
         return ResponseEntity.ok(novoProduto);
     }
 
-    @PutMapping("/{id}")
-    public Produto atualizarProduto(@PathVariable Long id, @RequestBody Produto produto) {
-        produto.setId(id);
-        return repoProduto.save(produto);
+    @PutMapping("/atualizaProduto/{nomeProduto}")
+    public ResponseEntity<?> atualizarProduto(@PathVariable String nomeProduto, @RequestBody Produto produto) {
+
+        Optional<Produto> produtoExistenteOpt = repoProduto.findByNomeProduto(nomeProduto);
+
+        if (produtoExistenteOpt.isPresent()) {
+            Produto produtoExistente = produtoExistenteOpt.get();
+
+            boolean isUpdated = false;
+
+            if (produto.getNomeProduto() != null && !produto.getNomeProduto().isEmpty() && !produto.getNomeProduto().equals(produtoExistente.getNomeProduto())) {
+                produtoExistente.setNomeProduto(produto.getNomeProduto());
+                isUpdated = true;
+            }
+
+            if (produto.getDescricao() != null && !produto.getDescricao().isEmpty() && !produto.getDescricao().equals(produtoExistente.getDescricao())) {
+                produtoExistente.setDescricao(produto.getDescricao());
+                isUpdated = true;
+            }
+
+            if (produto.getPreco() != null && !produto.getPreco().equals(BigDecimal.ZERO) && !produto.getPreco().equals(produtoExistente.getPreco())) {
+                produtoExistente.setPreco(produto.getPreco());
+                isUpdated = true;
+            }
+
+            if (produto.getQuantidade() != 0 && produto.getQuantidade() != produtoExistente.getQuantidade()) {
+                produtoExistente.setQuantidade(produto.getQuantidade());
+                isUpdated = true;
+            }
+
+            if (produto.getImagem() != null && !produto.getImagem().isEmpty() && !produto.getImagem().equals(produtoExistente.getImagem())) {
+                produtoExistente.setImagem(produto.getImagem());
+                isUpdated = true;
+            }
+
+            if (isUpdated) {
+                Produto produtoAtualizado = repoProduto.save(produtoExistente);
+                return ResponseEntity.ok(produtoAtualizado);
+            } else {
+                return ResponseEntity.ok(produtoExistente);
+            }
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+    @PutMapping("/atualizaProdutoPorId/{id}")
+    public ResponseEntity<?> atualizarProdutoPorId(@PathVariable Long id, @RequestBody Produto produto) {
+
+        Optional<Produto> produtoExistenteOpt = repoProduto.findById(id);
+
+        if (produtoExistenteOpt.isPresent()) {
+            Produto produtoExistente = produtoExistenteOpt.get();
+
+            boolean isUpdated = false;
+
+            if (produto.getNomeProduto() != null && !produto.getNomeProduto().isEmpty() && !produto.getNomeProduto().equals(produtoExistente.getNomeProduto())) {
+                produtoExistente.setNomeProduto(produto.getNomeProduto());
+                isUpdated = true;
+            }
+
+            if (produto.getDescricao() != null && !produto.getDescricao().isEmpty() && !produto.getDescricao().equals(produtoExistente.getDescricao())) {
+                produtoExistente.setDescricao(produto.getDescricao());
+                isUpdated = true;
+            }
+
+            if (produto.getPreco() != null && !produto.getPreco().equals(BigDecimal.ZERO) && !produto.getPreco().equals(produtoExistente.getPreco())) {
+                produtoExistente.setPreco(produto.getPreco());
+                isUpdated = true;
+            }
+
+            if (produto.getQuantidade() != 0 && produto.getQuantidade() != produtoExistente.getQuantidade()) {
+                produtoExistente.setQuantidade(produto.getQuantidade());
+                isUpdated = true;
+            }
+
+            if (produto.getImagem() != null && !produto.getImagem().isEmpty() && !produto.getImagem().equals(produtoExistente.getImagem())) {
+                produtoExistente.setImagem(produto.getImagem());
+                isUpdated = true;
+            }
+
+            if (isUpdated) {
+                Produto produtoAtualizado = repoProduto.save(produtoExistente);
+                return ResponseEntity.ok(produtoAtualizado);
+            } else {
+                return ResponseEntity.ok(produtoExistente);
+            }
+        }
+
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
