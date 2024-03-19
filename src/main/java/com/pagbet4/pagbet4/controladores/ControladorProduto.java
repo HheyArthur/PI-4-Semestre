@@ -37,6 +37,7 @@ public class ControladorProduto {
         return produtos;
     }
 
+    @SuppressWarnings("null")
     @GetMapping("/{id}")
     public Produto listarProduto(@PathVariable Long id) {
         return repoProduto.findById(id).get();
@@ -69,6 +70,7 @@ public class ControladorProduto {
         return ResponseEntity.ok(novoProduto);
     }
 
+    @SuppressWarnings("null")
     @PutMapping("/atualizaProduto/{nomeProduto}")
     public ResponseEntity<?> atualizarProduto(@PathVariable String nomeProduto, @RequestBody Produto produto) {
 
@@ -115,6 +117,7 @@ public class ControladorProduto {
         return ResponseEntity.notFound().build();
     }
 
+    @SuppressWarnings("null")
     @PutMapping("/atualizaProdutoPorId/{id}")
     public ResponseEntity<?> atualizarProdutoPorId(@PathVariable Long id, @RequestBody Produto produto) {
 
@@ -161,6 +164,7 @@ public class ControladorProduto {
         return ResponseEntity.notFound().build();
     }
 
+    @SuppressWarnings("null")
     @DeleteMapping("/{id}")
     public void deletarProduto(@PathVariable Long id) {
         repoProduto.deleteById(id);
