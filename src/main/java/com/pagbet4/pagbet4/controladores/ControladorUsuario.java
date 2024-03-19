@@ -210,7 +210,7 @@ public class ControladorUsuario {
         repoUsuario.delete(usuarioDeletar);
     }
 
-    @DeleteMapping("/deleteUser/{id}")
+    @DeleteMapping("/deleteUserId/{id}")
     public void deletaUsuario(@PathVariable Long id) {
         Usuario usuarioDeletar = repoUsuario.findById(id).orElse(null);
         repoUsuario.delete(usuarioDeletar);
