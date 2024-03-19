@@ -1,0 +1,33 @@
+/* Estilos para o cabeçalho */
+#mini-menu {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+
+
+
+
+/* Estilos para a tabela */
+#tabelacrud table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#tabelacrud th,
+#tabelacrud td {
+    
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+#tabelacrud .photo-icon {
+    width: 35px;
+    height: 35px;
+    border-radius: 3px;
+}
+
+
