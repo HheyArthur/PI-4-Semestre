@@ -164,6 +164,18 @@ public class ControladorProduto {
         return ResponseEntity.notFound().build();
     }
 
+    @PutMapping("ativarDesativarProduto/{id}")
+    public ResponseEntity<?> ativarDesativarProutos(@PathVariable Long id) {
+        Optional<Produto> produto = repoProduto.findById(id);
+        if (produto.isPresent()) {
+            Produto produtoStatusAlterado = produto.get();
+            produtoStatusAlterado.setAtivo(!produtoStatusAlterado.isAtivo());
+            repoProduto.save(produtoStatusAlterado);
+            return ResponseEntity.ok(produtoStatusAlterado);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
     @SuppressWarnings("null")
     @DeleteMapping("/{id}")
     public void deletarProduto(@PathVariable Long id) {
