@@ -193,6 +193,7 @@ function salvarProdEditado(id) {
             method: 'GET',
             success: function (data) {
                 arquivo = data.imagem;
+                console.log('Arquivo:', arquivo);
             }
         });
         $.ajax({
@@ -211,6 +212,7 @@ function salvarProdEditado(id) {
                 alert('Produto atualizado com sucesso!');
                 fecharModal();
                 carregarProduto();
+                limparCampos();
             },
             error: function (xhr, status, error) {
                 console.error('Erro ao atualizar o produto:', error);
@@ -233,12 +235,21 @@ function salvarProdEditado(id) {
                 alert('Produto atualizado com sucesso!');
                 fecharModal();
                 carregarProduto();
+                limparCampos();
             },
             error: function (xhr, status, error) {
                 console.error('Erro ao atualizar o produto:', error);
             }
         });
     }
+}
+
+function limparCampos() {
+    $('#m-imagemProdPrevEdit').val('');
+    $('#m-nomeprodEdit').val('');
+    $('#m-descricaoEdit').val('');
+    $('#m-quantidadeprodEdit').val('');
+    $('#m-precoprodEdit').val('');
 }
 
 function openModal() {
