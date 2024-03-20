@@ -11,7 +11,6 @@ function carregarUsuarios() {
 				newRow.append('<td>' + (usuario.funcao ? usuario.funcao : '') + '</td>');
 				newRow.append('<td class="acao ativo">' + (usuario.ativo ? 'Ativo' : 'Inativo') + '</td>');
 				newRow.append('<td class="acao editar" data-id="' + usuario.id + '">Editar</td>');
-				newRow.append('<td class="acao excluir" data-id="' + usuario.id + '">Excluir</td>');
 				$('tbody').append(newRow);
 			});
 		},
