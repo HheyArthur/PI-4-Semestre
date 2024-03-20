@@ -6,10 +6,6 @@
     gap: 10px;
 }
 
-
-
-
-
 /* Estilos para a tabela */
 #tabelacrud table {
     width: 100%;
@@ -25,8 +21,8 @@
 }
 
 #tabelacrud .photo-icon {
-    width: 35px;
-    height: 35px;
+    width: 150px;
+    height: 150px;
     border-radius: 3px;
 }
 
