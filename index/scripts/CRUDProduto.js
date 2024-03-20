@@ -192,7 +192,7 @@ function salvarProdEditado(id) {
             url: 'http://localhost:8080/produtos/' + id,
             method: 'GET',
             success: function (data) {
-                caminho = data.imagem;
+                arquivo = data.imagem;
             }
         });
         $.ajax({
