@@ -187,12 +187,20 @@ function salvarProdEditado(id) {
     var formato = arquivo.split('\\').pop();
     var caminho = "..\\img\\" + formato;
 
-    if (arquivo === '' || arquivo === null) {
+    if (arquivo === '' || arquivo === null || arquivo === undefined) {
+        var fallback = $.ajax({
+            url: 'http://localhost:8080/produtos/' + id,
+            method: 'GET',
+            success: function (data) {
+                caminho = data.imagem;
+            }
+        });
         $.ajax({
             url: 'http://localhost:8080/produtos/atualizaProdutoPorId/' + id,
             method: 'PUT',
             contentType: 'application/json',
             data: JSON.stringify({
+                imagem: caminho,
                 nomeProduto: nomeProduto,
                 descricao: descricao,
                 quantidade: quantidade,
@@ -201,6 +209,8 @@ function salvarProdEditado(id) {
             success: function (data) {
                 console.log('Produto atualizado:', data);
                 alert('Produto atualizado com sucesso!');
+                fecharModal();
+                carregarProduto();
             },
             error: function (xhr, status, error) {
                 console.error('Erro ao atualizar o produto:', error);
@@ -221,6 +231,8 @@ function salvarProdEditado(id) {
             success: function (data) {
                 console.log('Produto atualizado:', data);
                 alert('Produto atualizado com sucesso!');
+                fecharModal();
+                carregarProduto();
             },
             error: function (xhr, status, error) {
                 console.error('Erro ao atualizar o produto:', error);
@@ -241,6 +253,7 @@ function openModalEditar() {
 
 function fecharModal() {
     $('modalprod').hide();
+    $('modalEditar').hide();
 }
 
 // footer
