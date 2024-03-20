@@ -37,6 +37,7 @@ public class ControladorProduto {
         return produtos;
     }
 
+    @SuppressWarnings("null")
     @GetMapping("/{id}")
     public Produto listarProduto(@PathVariable Long id) {
         return repoProduto.findById(id).get();
@@ -49,7 +50,7 @@ public class ControladorProduto {
     }
     
 
-    @PostMapping("/cadastrar")
+    @PostMapping("/cadastrarProduto")
     public ResponseEntity<?> criarProduto(@RequestBody Produto produto) {
 
         if (produto.getNomeProduto() == null) {
@@ -69,6 +70,7 @@ public class ControladorProduto {
         return ResponseEntity.ok(novoProduto);
     }
 
+    @SuppressWarnings("null")
     @PutMapping("/atualizaProduto/{nomeProduto}")
     public ResponseEntity<?> atualizarProduto(@PathVariable String nomeProduto, @RequestBody Produto produto) {
 
@@ -115,6 +117,7 @@ public class ControladorProduto {
         return ResponseEntity.notFound().build();
     }
 
+    @SuppressWarnings("null")
     @PutMapping("/atualizaProdutoPorId/{id}")
     public ResponseEntity<?> atualizarProdutoPorId(@PathVariable Long id, @RequestBody Produto produto) {
 
@@ -161,7 +164,20 @@ public class ControladorProduto {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/{id}")
+    @PutMapping("ativarDesativarProduto/{id}")
+    public ResponseEntity<?> ativarDesativarProutos(@PathVariable Long id) {
+        Optional<Produto> produto = repoProduto.findById(id);
+        if (produto.isPresent()) {
+            Produto produtoStatusAlterado = produto.get();
+            produtoStatusAlterado.setAtivo(!produtoStatusAlterado.isAtivo());
+            repoProduto.save(produtoStatusAlterado);
+            return ResponseEntity.ok(produtoStatusAlterado);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @SuppressWarnings("null")
+    @DeleteMapping("/deletePorId/{id}")
     public void deletarProduto(@PathVariable Long id) {
         repoProduto.deleteById(id);
     }

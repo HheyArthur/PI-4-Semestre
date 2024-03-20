@@ -165,6 +165,7 @@ public class ControladorUsuario {
 
     }
 
+    @SuppressWarnings("null")
     @PutMapping("/alterarSenha/{id}")
     public ResponseEntity<String> alterarSenha(@PathVariable @NonNull Long id,
             @RequestBody @NonNull Usuario updateSenhaUsuario) {
@@ -204,12 +205,21 @@ public class ControladorUsuario {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Dados inválidos");
     }
 
+    @SuppressWarnings("null")
     @DeleteMapping("/deleteUser/{email}")
     public void deletaUsuario(@PathVariable String email) {
         Usuario usuarioDeletar = repoUsuario.findByEmail(email);
         repoUsuario.delete(usuarioDeletar);
     }
 
+    @SuppressWarnings("null")
+    @DeleteMapping("/deleteUserId/{id}")
+    public void deletaUsuario(@PathVariable Long id) {
+        Usuario usuarioDeletar = repoUsuario.findById(id).orElse(null);
+        repoUsuario.delete(usuarioDeletar);
+    }
+
+    @SuppressWarnings("null")
     @DeleteMapping("/deleteAllSemSenha")
     public void deletaUsuarioSemSenha() {
         List<Usuario> usuarios = getAllUsuario();

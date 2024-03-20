@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-Pagbet4mainApplication<pagbet4>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.pagbet4.pagbet4.Pagbet4mainApplication",
+            "projectName": "pagbet4",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
