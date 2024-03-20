@@ -34,7 +34,7 @@ CREATE TABLE `produto` (
   `qtd_avaliacoes` bigint NOT NULL,
   `imagem` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `produto` (
 
 LOCK TABLES `produto` WRITE;
 /*!40000 ALTER TABLE `produto` DISABLE KEYS */;
-INSERT INTO `produto` VALUES (1,_binary '',0,3554,'Descrição pendente','Cartela de Bingo sem número',1.99,1000,0,'..\\index\\img\\bingo_cartela2.webp'),(2,_binary '',0,4766,'Descrição pendente','Cartela de Bingo colorida',2.99,5,0,'..\\index\\img\\bingo_cartela3.webp'),(3,_binary '',0,4058,'Descrição pendente','Cartela de Bingo simples 2',1.99,1,0,'..\\index\\img\\cartela_bingo.png'),(4,_binary '',0,1048,'Descrição pendente','Cartela de Bingo simples 3',1.99,1,0,'..\\index\\img\\bingo_cartela4.webp');
+INSERT INTO `produto` VALUES (1,_binary '',0,3554,'Descrição pendente','Cartela de Bingo sem número',1.99,1000,0,'..\\img\\bingo_cartela2.webp'),(2,_binary '',0,4766,'Descrição pendente','Cartela de Bingo colorida',2.99,5,0,'..\\img\\bingo_cartela3.webp'),(3,_binary '',0,4058,'Descrição pendente','Cartela de Bingo simples 2',1.99,1,0,'..\\img\\cartela_bingo.png'),(4,_binary '',0,1048,'Descrição pendente','Cartela de Bingo simples 3',1.99,1,0,'..\\img\\bingo_cartela4.webp'),(5,_binary '',0,1013,'Descrição pendente','Dado BlackJack',1.99,1,0,'..\\index\\img\\imagem_indisponivel.png'),(6,_binary '',0,5731,'Descrição pendente','Baralho Comum',1.99,1,0,'..\\index\\img\\imagem_indisponivel.png'),(7,_binary '',0,8851,'Descrição pendente','Tele Sena - Abril',1.99,1,0,'..\\index\\img\\imagem_indisponivel.png'),(8,_binary '',0,8442,'Descrição pendente','Tele Sena - Fevereiro',1.99,1,0,'..\\index\\img\\imagem_indisponivel.png'),(9,_binary '',0,5227,'Descrição pendente','Carnê do Baú',1.99,1,0,'..\\index\\img\\imagem_indisponivel.png'),(10,_binary '',0,2850,'Descrição pendente','Kit Poker',1.99,1,0,'..\\index\\img\\imagem_indisponivel.png'),(11,_binary '',0,2438,'Descrição pendente','Roleta',1.99,1,0,'..\\index\\img\\imagem_indisponivel.png');
 /*!40000 ALTER TABLE `produto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -63,7 +63,7 @@ CREATE TABLE `usuario` (
   `funcao` varchar(255) DEFAULT NULL,
   `cpf` bigint DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -72,7 +72,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (10,'angelo@outlook.com','Angelo','$2a$10$zNdzE08D/GFWJ76XFX.TdeipVR85CNSym.CGdJRqgjVnMNKU/lpke',_binary '\0','administrador',123456789101),(11,'George@gmail','George','$2a$10$g.NqopdrIn1LjijIl0DPkOFDkP3fgSotdEvZlHkATyBOZDZ/6QAIi',_binary '','Estoquista',1234567891011),(16,'ferreira.angelo98@gmail.com','Angelo Baracho','$2a$10$XRF0PAzXYe8kWOi0OFvQ1OgcLXkEtBKY29sIZW9Smzxlmwu99wCgG',_binary '','estoquista',123456789101),(18,'','George','$2a$10$fuUaGswe.dpa7QcH/iTWGejEu7iWgovQvg9Tj5oddho.GN1J8nz1a',_binary '','admin',123456789);
+INSERT INTO `usuario` VALUES (10,'angelo@outlook.com','Angelo','$2a$10$zNdzE08D/GFWJ76XFX.TdeipVR85CNSym.CGdJRqgjVnMNKU/lpke',_binary '\0','administrador',123456789101),(11,'George@gmail','George','$2a$10$g.NqopdrIn1LjijIl0DPkOFDkP3fgSotdEvZlHkATyBOZDZ/6QAIi',_binary '','admin',123456789),(16,'ferreira.angelo98@gmail.com','Angelo Baracho','$2a$10$XRF0PAzXYe8kWOi0OFvQ1OgcLXkEtBKY29sIZW9Smzxlmwu99wCgG',_binary '','estoquista',123456789101),(19,'','George','$2a$10$I.Txz7fPi.KoW7XgSqLmjOx8j9.k2s4Kfiwm3vcVqaOBzoGzfafHG',_binary '','admin',123456789);
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -85,4 +85,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-17 18:41:07
+-- Dump completed on 2024-03-19 22:57:16

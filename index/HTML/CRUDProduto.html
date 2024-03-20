@@ -14,11 +14,11 @@
     <main>
         <section id="cabecalho">
             <div>
-                <h1> Lista Produtos</h1>
+                <h1>Lista Produtos</h1>
             </div>
             <div id="mini-menu">
-                <input type="text"> <span><button type="button" class="btn btn-primary"> Pesquisar </button></span>
-                <button class="btn" onclick="openModal()">Abrir Modal</button>
+                <input id="pesquisaInput" type="text"> <span><button id="pesquisaBtn" type="button" class="btn btn-primary" onclick="pesquisarProduto()"> Pesquisar </button></span>
+                <button id="cadastrarBtn" class="btn btn-secondary" onclick="openModal()">+</button>
             </div>
         </section>
         <section id="tabelacrud">
@@ -39,31 +39,71 @@
             </table>
         </section>
     </main>
-    <section><!-- inicio modal -->
+    <!-- inicio modal Cadastrar-->
+    <section>
         <div class="modal" id="modalprod" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Cadastro Produto</h5>
+                        <h5 class="modal-title">Cadastrar Produto</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <form id="produtoForm">
-                            <label for="m-fotoprod">Foto</label>
-                            <img id="m-imagemProd" src="" alt="">
-                            <label for="m-nomeprod type=" text">Nome Produto</label>
-                            <input id="m-nomeprod" type="text" required />
-                            <label for="m-quantidadeprod">Quantidade</label>
-                            <input id="m-quantidadeprod" type="number" required />
-                            <label for="m-precoprod">Preço</label>
-                            <input id="m-precoprod" type="text" required />
-                            <button type="submit">Salvar</button>
-                            <button type="button" onclick="fecharModal()">Fechar</button>
+                            <img id="preview" src="" style="max-width: 200px; max-height: 200px;" />
+                            <script>
+                                function previewImage(event) {
+                                    var input = event.target;
+                                    var reader = new FileReader();
+                                    reader.onload = function () {
+                                        var imgElement = document.getElementById("preview");
+                                        imgElement.src = reader.result;
+                                    };
+                                    reader.readAsDataURL(input.files[0]);
+                                }
+                            </script>
+                            <input id="m-imagemProdPrev" type="file" accept="image/*" onchange="previewImage(event)" />
+                            <label for="m-nomeprodCad" type="text">Nome Produto</label>
+                            <input id="m-nomeprodCad" type="text" required />
+                            <label for="m-descricaoProdCad">Descrição do Produto</label>
+                            <textarea id="m-descricaoProdCad" name="descricaoProd" rows="5" cols="50"></textarea>
+                            <label for="m-quantidadeprodCad">Quantidade</label>
+                            <input id="m-quantidadeprodCad" type="number" required />
+                            <label for="m-precoprodCad">Preço</label>
+                            <input id="m-precoprodCad" type="text" required />
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-primary" onclick="cadastrarProduto()">Salvar</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- inicio modal Editar -->
+    <section>
+        <div class="modal" id="modalEditar" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Editar Produto</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="produtoForm">
+                            <img id="m-imagemProdEdit" src="" alt="">
+                            <label for="m-nomeprodEdit" type="text">Nome Produto</label>
+                            <input id="m-nomeprodEdit" type="text" required />
+                            <label for="m-quantidadeprodEdit">Quantidade</label>
+                            <input id="m-quantidadeprodEdit" type="number" required />
+                            <label for="m-precoprodEdit">Preço</label>
+                            <input id="m-precoprodEdit" type="text" required />
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary">Salvar</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                     </div>
                 </div>
             </div>
