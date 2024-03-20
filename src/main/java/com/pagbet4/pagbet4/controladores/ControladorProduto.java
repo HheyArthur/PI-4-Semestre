@@ -50,7 +50,7 @@ public class ControladorProduto {
     }
     
 
-    @PostMapping("/cadastrar")
+    @PostMapping("/cadastrarProduto")
     public ResponseEntity<?> criarProduto(@RequestBody Produto produto) {
 
         if (produto.getNomeProduto() == null) {

@@ -15,9 +15,18 @@ function carregarProduto() {
                 newRow.append('<td>' + produto.nomeProduto + '</td>');
                 newRow.append('<td>' + produto.quantidade + '</td>');
                 newRow.append('<td>R$ ' + produto.preco + '</td>');
-                newRow.append('<td class="acao ativo"><button type="button" class="btn btn-success" data-id="' + produto.id + '" onclick="ativarDesativar(' + produto.id + ')">' + (produto.ativo ? 'Ativo' : 'Inativo') + '</button></td>');
+                newRow.append('<td class="acao ativo"><button type="button" class="btn" data-id="' + produto.id + '" onclick="ativarDesativar(' + produto.id + ')">' + (produto.ativo ? 'Ativo' : 'Inativo') + '</button></td>');
                 newRow.append('<td class="acao"><button type="button" class="btn btn-primary" onclick="editarProduto(' + produto.id + ')">Editar</button></td>');
                 $('tbody').append(newRow);
+                
+                var button = newRow.find('button[data-id="' + produto.id + '"]');
+                if (produto.ativo) {
+                    button.addClass('btn-success');
+                    button.removeClass('btn-danger');
+                } else {
+                    button.addClass('btn-danger');
+                    button.removeClass('btn-success');
+                }
             });
         },
         error: function (xhr, status, error) {
@@ -26,7 +35,7 @@ function carregarProduto() {
     });
 }
 
-document.getElementById('pesquisaInput').addEventListener('keypress', function(event) {
+document.getElementById('pesquisaInput').addEventListener('keypress', function (event) {
     if (event.key === 'Enter') {
         pesquisarProduto();
     }
@@ -37,7 +46,7 @@ function ativarDesativar(id) {
     $.ajax({
         url: 'http://localhost:8080/produtos/ativarDesativarProduto/' + id,
         method: 'PUT',
-        success: function(data) {
+        success: function (data) {
             // Aqui você pode adicionar o código para lidar com os dados retornados pela requisição
             console.log('Produto atualizado:', data);
             var button = document.querySelector('button[data-id="' + id + '"]');
@@ -51,7 +60,7 @@ function ativarDesativar(id) {
                 button.classList.add('btn-danger');
             }
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             console.error('Erro ao atualizar o produto:', error);
         }
     });
@@ -67,7 +76,7 @@ function pesquisarProduto() {
     $.ajax({
         url: 'http://localhost:8080/produtos/pesquisa/' + palavra,
         method: 'GET',
-        success: function(data) {
+        success: function (data) {
             if (data.length === 0) {
                 $('tbody').empty();
                 var mensagemErro = $('<tr>');
@@ -83,12 +92,12 @@ function pesquisarProduto() {
                 novaLinha.append('<td>' + produto.nomeProduto + '</td>');
                 novaLinha.append('<td>' + produto.quantidade + '</td>');
                 novaLinha.append('<td>R$ ' + produto.preco + '</td>');
-                novaLinha.append('<td class="acao ativo"><button type="button" class="btn btn-success">' + (produto.ativo ? 'Ativo' : 'Inativo') + '</button></td>');
+                novaLinha.append('<td class="acao ativo"><button type="button" class="btn" data-id="' + produto.id + '" onclick="ativarDesativar(' + produto.id + ')">' + (produto.ativo ? 'Ativo' : 'Inativo') + '</button></td>');
                 novaLinha.append('<td class="acao"><button type="button" class="btn btn-primary" onclick="editarProduto(' + produto.id + ')">Editar</button></td>');
                 $('tbody').append(novaLinha);
-            });
+            }); 
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             console.error('Erro ao realizar a pesquisa:', error);
         }
     });
@@ -113,52 +122,120 @@ $('#produtoForm').submit(function (event) {
     }
 });
 
-//TODO: Implementar a lógica para enviar o objeto 'produto' para o backend - Angelo 22:55 19/03/2024
 function cadastrarProduto() {
     var nome = document.getElementById('m-nomeprodCad').value;
     var arquivo = document.getElementById('m-imagemProdPrev').value;
+    console.log(arquivo);
     var descricao = document.getElementById('m-descricaoProdCad').value;
     var quantidade = document.getElementById('m-quantidadeprodCad').value;
     var preco = document.getElementById('m-precoprodCad').value;
-    var formato = arquivo.split('.').pop();
-    var caminho = "..\\img\\" + nome + '.' + formato;
+    var formato = arquivo.split('\\').pop();
+    var caminho = "..\\img\\" + formato;
+    console.log(caminho);
 
     $.ajax({
-        url: 'http://localhost:8080/produtos',
+        url: 'http://localhost:8080/produtos/cadastrarProduto',
         method: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({
-            nome: nome,
-            caminho: caminho
+            nomeProduto: nome,
+            descricao: descricao,
+            imagem: caminho,
+            quantidade: quantidade,
+            preco: preco
         }),
-        success: function(data) {
+        success: function (data) {
             console.log('Produto cadastrado:', data);
+            closeModal();
         },
-        error: function(xhr, status, error) {
+        error: function (_, _, error) {
             console.error('Erro ao cadastrar o produto:', error);
         }
     });
 }
 
-
 function editarProduto(id) {
     $.ajax({
         url: 'http://localhost:8080/produtos/' + id,
         method: 'GET',
-        success: function(data) {
-            // Preenche os campos do formulário com os dados do produto
+        success: function (data) {
+
             $('#m-imagemProdEdit').attr('src', data.imagem);
+            $('m-imagemProdPrevEdit').val(data.imagem);
             $('#m-nomeprodEdit').val(data.nomeProduto);
+            $('#m-descricaoEdit').val(data.descricao);
             $('#m-quantidadeprodEdit').val(data.quantidade);
             $('#m-precoprodEdit').val(data.preco);
-            
+
             // Abre o modal de edição
             openModalEditar();
+            var bntSalvar = document.getElementById('btnSalvar').addEventListener('click', function () {
+                var confirma = window.confirm('Deseja realmente salvar essas alterações?');
+                if (!confirma){
+                    alert('Operação cancelada!');
+                    return;
+                } else {
+                    salvarProdEditado(id);
+                }
+
+            });
+
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             console.error('Erro ao buscar dados do produto:', error);
         }
     });
+}
+
+function salvarProdEditado(id) {
+    var arquivo = $('#m-imagemProdPrevEdit').val();
+    var nomeProduto = $('#m-nomeprodEdit').val();
+    var descricao = $('#m-descricaoEdit').val();
+    var quantidade = $('#m-quantidadeprodEdit').val();
+    var preco = $('#m-precoprodEdit').val();
+    var formato = arquivo.split('\\').pop();
+    var caminho = "..\\img\\" + formato;
+
+    if (arquivo === '' || arquivo === null) {
+        $.ajax({
+            url: 'http://localhost:8080/produtos/atualizaProdutoPorId/' + id,
+            method: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                nomeProduto: nomeProduto,
+                descricao: descricao,
+                quantidade: quantidade,
+                preco: preco
+            }),
+            success: function (data) {
+                console.log('Produto atualizado:', data);
+                alert('Produto atualizado com sucesso!');
+            },
+            error: function (xhr, status, error) {
+                console.error('Erro ao atualizar o produto:', error);
+            }
+        });
+    } else {
+        $.ajax({
+            url: 'http://localhost:8080/produtos/atualizaProdutoPorId/' + id,
+            method: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                imagem: caminho,
+                nomeProduto: nomeProduto,
+                descricao: descricao,
+                quantidade: quantidade,
+                preco: preco
+            }),
+            success: function (data) {
+                console.log('Produto atualizado:', data);
+                alert('Produto atualizado com sucesso!');
+            },
+            error: function (xhr, status, error) {
+                console.error('Erro ao atualizar o produto:', error);
+            }
+        });
+    }
 }
 
 function openModal() {

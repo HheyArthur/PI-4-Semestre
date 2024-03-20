@@ -92,9 +92,23 @@
                     </div>
                     <div class="modal-body">
                         <form id="produtoForm">
-                            <img id="m-imagemProdEdit" src="" alt="">
+                            <img id="m-imagemProdEdit" src=""/>
+                            <script>
+                                function previewImage(event) {
+                                    var input = event.target;
+                                    var reader = new FileReader();
+                                    reader.onload = function () {
+                                        var imgElement = document.getElementById("m-imagemProdEdit");
+                                        imgElement.src = reader.result;
+                                    };
+                                    reader.readAsDataURL(input.files[0]);
+                                }
+                            </script>
+                            <input id="m-imagemProdPrevEdit" type="file" accept="image/*" onchange="previewImage(event)" />
                             <label for="m-nomeprodEdit" type="text">Nome Produto</label>
                             <input id="m-nomeprodEdit" type="text" required />
+                            <label for="m-descricaoProdEdit">Descrição do Produto</label>
+                            <textarea id="m-descricaoEdit" name="descricaoProdeEdit" rows="5" cols="50"></textarea>
                             <label for="m-quantidadeprodEdit">Quantidade</label>
                             <input id="m-quantidadeprodEdit" type="number" required />
                             <label for="m-precoprodEdit">Preço</label>
@@ -102,7 +116,7 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary">Salvar</button>
+                        <button type="button" class="btn btn-primary" id="btnSalvar">Salvar</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                     </div>
                 </div>
