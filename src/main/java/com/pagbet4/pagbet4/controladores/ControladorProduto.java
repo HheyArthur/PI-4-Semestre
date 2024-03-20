@@ -177,7 +177,7 @@ public class ControladorProduto {
     }
 
     @SuppressWarnings("null")
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/deletePorId/{id}")
     public void deletarProduto(@PathVariable Long id) {
         repoProduto.deleteById(id);
     }
