@@ -115,6 +115,12 @@ public class ControladorUsuario {
         return repoUsuario.findByEmail(email);
     }
 
+        @GetMapping("/pesquisa/{nome}")
+    public List<Usuario> pesquisaUsuarioNome(@PathVariable String nome) {
+        List<Usuario> usuarios = repoUsuario.findAllByNomeContaining(nome);
+        return usuarios;
+    }
+
     // Desativa e ativa o usuário, com base no email
     @PutMapping("/desativarAtivarUsuario/{email}")
     public ResponseEntity<?> ativarDesativarUsuario(@PathVariable String email) {

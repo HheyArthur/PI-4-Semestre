@@ -11,12 +11,12 @@ function carregarProduto() {
             data.forEach(function (produto) {
                 var newRow = $('<tr>');
                 newRow.append('<td>' + produto.codigo + '</td>');
-                newRow.append('<td><img class="photo-icon" src="' + produto.imagem + '"></td>');
+                newRow.append('<td><img class="photo-icon" src="' + produto.imagemPrincipal + '"></td>');
                 newRow.append('<td>' + produto.nomeProduto + '</td>');
                 newRow.append('<td>' + produto.quantidade + '</td>');
                 newRow.append('<td>R$ ' + produto.preco + '</td>');
                 newRow.append('<td class="acao ativo"><button type="button" class="btn" data-id="' + produto.id + '" onclick="ativarDesativar(' + produto.id + ')">' + (produto.ativo ? 'Ativo' : 'Inativo') + '</button></td>');
-                newRow.append('<td class="acao"><button type="button" class="btn btn-primary" onclick="editarProduto(' + produto.id + ')">Editar</button></td>');
+                newRow.append('<td class="acao"><button type="button" class="btn btn-primary" onclick="editarProduto(' + produto.id + ')">Editar</button> <button type="button" class="btn btn-primary" onclick="visualizarProduto(' + produto.id + ')">Visualizar</button></td>');
                 $('tbody').append(newRow);
 
                 var button = newRow.find('button[data-id="' + produto.id + '"]');
@@ -31,6 +31,44 @@ function carregarProduto() {
         },
         error: function (xhr, status, error) {
             console.error('Erro ao carregar produtos:', error);
+        }
+    });
+}
+
+function visualizarProduto(id) {
+    // Fazer a requisição AJAX
+    console.log('ID:', id);
+    $.ajax({
+        url: 'http://localhost:8080/produtos/' + id,
+        type: 'GET',
+        success: function (response) {
+            // Limpar o carrossel
+            $('#carouselExampleIndicators .carousel-indicators').empty();
+            $('#carouselExampleIndicators .carousel-inner').empty();
+
+            // Obter a imagem principal
+            var imagemPrincipal = response.imagemPrincipal;
+
+            // Criar o elemento do carrossel para a imagem principal
+            var indicator = $('<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"></li>');
+            var carouselItem = $('<div class="carousel-item"><img class="d-block img-fluid" src="' + imagemPrincipal + '" alt="Imagem Principal"></div>');
+            indicator.addClass('active');
+            carouselItem.addClass('active');
+            $('#carouselExampleIndicators .carousel-indicators').append(indicator);
+            $('#carouselExampleIndicators .carousel-inner').append(carouselItem);
+
+            // Preencher o carrossel com as outras imagens do objeto Produto
+            $.each(response.imagens, function (index, imagens) {
+                var indicator = $('<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="' + (index + 1) + '"></li>');
+                var carouselItem = $('<div class="carousel-item"><img class="d-block img-fluid" src="' + imagens.url + '" alt="Imagem ' + (index + 1) + '"></div>');
+                $('#carouselExampleIndicators .carousel-indicators').append(indicator);
+                $('#carouselExampleIndicators .carousel-inner').append(carouselItem);
+            });
+
+            $('#imageModal').modal('show');
+        },
+        error: function (xhr, status, error) {
+            console.error('Erro ao carregar imagens:', error);
         }
     });
 }
@@ -88,7 +126,7 @@ function pesquisarProduto() {
             data.forEach(function (produto) {
                 var novaLinha = $('<tr>');
                 novaLinha.append('<td>' + produto.codigo + '</td>');
-                novaLinha.append('<td><img class="photo-icon" src="' + produto.imagem + '"></td>');
+                novaLinha.append('<td><img class="photo-icon" src="' + produto.imagemPrincipal + '"></td>');
                 novaLinha.append('<td>' + produto.nomeProduto + '</td>');
                 novaLinha.append('<td>' + produto.quantidade + '</td>');
                 novaLinha.append('<td>R$ ' + produto.preco + '</td>');
@@ -131,7 +169,7 @@ function cadastrarProduto() {
         data: JSON.stringify({
             nomeProduto: nome,
             descricao: descricao,
-            imagem: caminho,
+            imagemPrincipal: caminho,
             quantidade: quantidade,
             preco: preco
         }),
@@ -152,8 +190,8 @@ function editarProduto(id) {
         method: 'GET',
         success: function (data) {
 
-            $('#m-imagemProdEdit').attr('src', data.imagem);
-            $('m-imagemProdPrevEdit').val(data.imagem);
+            $('#m-imagemProdEdit').attr('src', data.imagemPrincipal);
+            $('m-imagemProdPrevEdit').val(data.imagemPrincipal);
             $('#m-nomeprodEdit').val(data.nomeProduto);
             $('#m-descricaoEdit').val(data.descricao);
             $('#m-quantidadeprodEdit').val(data.quantidade);
@@ -195,7 +233,7 @@ function salvarProdEditado(id) {
             method: 'GET',
             async: false,
             success: function (data) {
-                caminho = data.imagem;
+                caminho = data.imagemPrincipal;
             }
         });
     } else {
@@ -208,7 +246,7 @@ function salvarProdEditado(id) {
         method: 'PUT',
         contentType: 'application/json',
         data: JSON.stringify({
-            imagem: caminho,
+            imagemPrincipal: caminho,
             nomeProduto: nomeProduto,
             descricao: descricao,
             quantidade: quantidade,

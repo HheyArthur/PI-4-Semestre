@@ -15,13 +15,19 @@
     <div class="container">
         <div class="header">
             <span>Lista de Usuarios</span>
+        </div>
+        <div class="pesquisarIncluir">
+            <input id="pesquisaInput" type="text">
+            <span>
+                <button class="btnPesquisar" id="pesquisaBtn" type="button" onclick="pesquisarUsuario()"> Pesquisar </button>
+            </span>
             <button onclick="openModal()" id="new">Incluir</i></button>
         </div>
         <div class="divTable">
             <table>
                 <thead>
                     <tr>
-                        
+
                         <th>Nome</th>
                         <th>Email</th>
                         <th>Grupo</th>
@@ -39,7 +45,8 @@
                     <label for="m-nome">Nome</label>
                     <input id="m-nome" type="text" required />
                     <label for="m-cpf">CPF</label>
-                    <input id="m-cpf" type="text" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" placeholder="Ex: 123.456.789-01" required />
+                    <input id="m-cpf" type="text" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" maxlength="11" placeholder="Ex: 123.456.789-01"
+                        required />
                     <label for="m-email">Email</label>
                     <input id="m-email" type="email" required />
                     <label for="m-senha">Senha</label>

@@ -39,8 +39,13 @@ public class ControladorProduto {
 
     @SuppressWarnings("null")
     @GetMapping("/{id}")
-    public Produto listarProduto(@PathVariable Long id) {
-        return repoProduto.findById(id).get();
+    public ResponseEntity<Produto> listarProduto(@PathVariable Long id) {
+        Optional<Produto> optionalProduto = repoProduto.findById(id);
+        if (optionalProduto.isPresent()) {
+            return new ResponseEntity<>(optionalProduto.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/pesquisa/{nome}")
@@ -101,8 +106,8 @@ public class ControladorProduto {
                 isUpdated = true;
             }
 
-            if (produto.getImagem() != null && !produto.getImagem().isEmpty() && !produto.getImagem().equals(produtoExistente.getImagem())) {
-                produtoExistente.setImagem(produto.getImagem());
+            if (produto.getImagemPrincipal() != null && !produto.getImagemPrincipal().isEmpty() && !produto.getImagemPrincipal().equals(produtoExistente.getImagemPrincipal())) {
+                produtoExistente.setImagemPrincipal(produto.getImagemPrincipal());
                 isUpdated = true;
             }
 
@@ -148,8 +153,8 @@ public class ControladorProduto {
                 isUpdated = true;
             }
 
-            if (produto.getImagem() != null && !produto.getImagem().isEmpty() && !produto.getImagem().equals(produtoExistente.getImagem())) {
-                produtoExistente.setImagem(produto.getImagem());
+            if (produto.getImagemPrincipal() != null && !produto.getImagemPrincipal().isEmpty() && !produto.getImagemPrincipal().equals(produtoExistente.getImagemPrincipal())) {
+                produtoExistente.setImagemPrincipal(produto.getImagemPrincipal());
                 isUpdated = true;
             }
 

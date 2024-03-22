@@ -18,6 +18,7 @@ function carregarUsuarios() {
 			console.error('Erro ao carregar usuários:', error);
 		}
 	});
+	
 }
 
 // Função para abrir o modal
@@ -30,6 +31,52 @@ function openModal() {
 	modal.css('margin-top', marginTop);
 }
 
+function pesquisarUsuario() { 
+	var palavra = document.getElementById('pesquisaInput').value;
+    if (palavra === '') {
+        carregarUsuarios();
+        return;
+    }
+	$.ajax({
+        url: 'http://localhost:8080/usuarios/pesquisa/' + palavra,
+        method: 'GET',
+        success: function (data) {
+            if (data.length === 0) {
+                $('tbody').empty();
+                var mensagemErro = $('<tr>');
+                mensagemErro.append('<td colspan="7" style="text-align: center; font-weight: bold;">Nenhum Usuário Encontrado</td>');
+                $('tbody').append(mensagemErro);
+                return;
+            }
+            $('tbody').empty();
+			data.forEach(function (usuario) {
+				var newRow = $('<tr>');
+				newRow.append('<td>' + usuario.nome + '</td>');
+				newRow.append('<td>' + usuario.email + '</td>');
+				newRow.append('<td>' + (usuario.funcao ? usuario.funcao : '') + '</td>');
+				newRow.append('<td class="acao ativo">' + (usuario.ativo ? 'Ativo' : 'Inativo') + '</td>');
+				newRow.append('<td class="acao editar" data-id="' + usuario.id + '">Editar</td>');
+				$('tbody').append(newRow);
+
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error('Erro ao realizar a pesquisa:', error);
+        }
+    });
+}
+
+document.getElementById('pesquisaInput').addEventListener('keypress', function (event) {
+    if (event.key === 'Enter') {
+        pesquisarUsuario();
+    }
+});
+
+$('#m-cpf').on('input', function () {
+    var cpf = $(this).val().replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+    cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4"); // Adiciona os pontos e o hífen
+    $(this).val(cpf); // Atualiza o valor do campo de entrada
+});
 
 // Função para fechar o modal
 function fecharModal() {
@@ -154,6 +201,9 @@ $(document).on('click', '.editar', function () {
 		alert("Email do usuário não encontrado.");
 	}
 
+	// Remove todos os eventos de submissão existentes do formulário
+	$('#usuarioForm').off('submit');
+
 	$('#usuarioForm').submit(function (event) {
 		event.preventDefault(); // Evitar o comportamento padrão do formulário
 
@@ -198,23 +248,23 @@ $(document).on('click', '.editar', function () {
 });
 
 $(document).on('click', '.ativo', function () {
-    var email = $(this).closest('tr').find('td:nth-child(2)').text();
-    console.log(email);
-    if (email) {
-        $.ajax({
-            url: 'http://localhost:8080/usuarios/desativarAtivarUsuario/' + email, // URL do endpoint para ativar/desativar usuário
-            method: 'PUT',
-            success: function (data) {
-                alert("Status do usuário atualizado com sucesso.");
-                carregarUsuarios(); // Atualiza a lista de usuários após a atualização
-            },
-            error: function (error) {
-                console.error('Erro ao atualizar status do usuário:', error);
-                alert("Erro ao atualizar status do usuário. Por favor, tente novamente.");
-            }
-        });
-    } else {
-        alert("Email do usuário não encontrado.");
-    }
+	var email = $(this).closest('tr').find('td:nth-child(2)').text();
+	console.log(email);
+	if (email) {
+		$.ajax({
+			url: 'http://localhost:8080/usuarios/desativarAtivarUsuario/' + email, // URL do endpoint para ativar/desativar usuário
+			method: 'PUT',
+			success: function (data) {
+				alert("Status do usuário atualizado com sucesso.");
+				carregarUsuarios(); // Atualiza a lista de usuários após a atualização
+			},
+			error: function (error) {
+				console.error('Erro ao atualizar status do usuário:', error);
+				alert("Erro ao atualizar status do usuário. Por favor, tente novamente.");
+			}
+		});
+	} else {
+		alert("Email do usuário não encontrado.");
+	}
 });
 

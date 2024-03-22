@@ -20,4 +20,6 @@ public interface RepoUsuario extends JpaRepository<Usuario, Long> {
 
     List<Usuario> findAllByEmail(String email);
 
+    List<Usuario> findAllByNomeContaining(String nome);
+
 }
