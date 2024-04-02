@@ -122,6 +122,35 @@
             </div>
         </div>
     </section>
+    <section>
+        <!-- Modal -->
+        <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imagemModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content" style="width: 800px; height: 900px;">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="imagemModalLabel">Carrossel de Imagens</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div id="carouselExampleIndicators" class="carousel slide">
+                            <div class="carousel-indicators">
+                                <!-- Indicators will be generated dynamically -->
+                            </div>
+                            <div class="carousel-inner">
+                                <!-- Images will be loaded dynamically -->
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            </button >
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            </button >
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
     <div class="d-flex justify-content-center">
         <ul id="pagination" class="pagination mt-3 mb-0">
         </ul>
@@ -131,6 +160,7 @@
         crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="../scripts/CRUDProduto.js"></script>
     <script src="../scripts/CRUDProdutoEstoquista.js"></script>
 
 </body>

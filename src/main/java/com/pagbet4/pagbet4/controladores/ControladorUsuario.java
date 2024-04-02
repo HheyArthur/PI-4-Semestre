@@ -77,7 +77,7 @@ public class ControladorUsuario {
     }
 
     @GetMapping("/checkSession")
-    public ResponseEntity<List<Usuario>> checkSession(HttpSession session) {
+    public List<Usuario> checkSession(HttpSession session) {
         List<Usuario> usuariosLogados = new ArrayList<>();
         Enumeration<String> sessionAttributeNames = session.getAttributeNames();
         while (sessionAttributeNames.hasMoreElements()) {
@@ -87,7 +87,7 @@ public class ControladorUsuario {
                 usuariosLogados.add((Usuario) attributeValue);
             }
         }
-        return ResponseEntity.ok(usuariosLogados);
+        return usuariosLogados;
     }
 
     @PostMapping("/cadastro")

@@ -12,16 +12,16 @@ function loginUser() {
     url: "http://localhost:8080/usuarios/getUser/" + user.email,
     success: function (data) {
       let funcao = data.funcao;
-      console.log(funcao);
-      if (funcao == "admin") {
+      if (funcao == "admin" || funcao == "administrador") {
         $.ajax({
           type: "POST",
           url: "http://localhost:8080/usuarios/login",
           data: JSON.stringify(user),
           contentType: "application/json",
           success: function (response) {
-            console.log("Login successful!" + response);
-            Openmodal();
+            localStorage.setItem("email", email);
+            localStorage.setItem("funcao", funcao);
+            window.location.href = "http://127.0.0.1:5500/index/HTML/backoffice.html"
           },
           error: function (xhr, status, erro) {
             alert("Erro ao logar: " + xhr.responseText);
@@ -35,8 +35,9 @@ function loginUser() {
           data: JSON.stringify(user),
           contentType: "application/json",
           success: function (response) {
-            console.log("Login successful!" + response);
-            OpenmodalEstoquista();
+            localStorage.setItem("email", email);
+            localStorage.setItem("funcao", funcao);
+            window.location.href = "http://127.0.0.1:5500/index/HTML/backoffice.html"
           },
           error: function (xhr, status, erro) {
             console.log("Erro ao logar: " + xhr.responseText);

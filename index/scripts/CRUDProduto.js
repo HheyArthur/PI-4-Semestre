@@ -9,7 +9,7 @@ function carregarProduto() {
         success: function (data) {
             $('tbody').empty();
             data.forEach(function (produto) {
-                var newRow = $('<tr>');
+                var newRow = $('<tr class="item">');
                 newRow.append('<td>' + produto.codigo + '</td>');
                 newRow.append('<td><img class="photo-icon" src="' + produto.imagemPrincipal + '"></td>');
                 newRow.append('<td>' + produto.nomeProduto + '</td>');
@@ -124,7 +124,7 @@ function pesquisarProduto() {
             }
             $('tbody').empty();
             data.forEach(function (produto) {
-                var novaLinha = $('<tr>');
+                var novaLinha = $('<tr class="item">');
                 novaLinha.append('<td>' + produto.codigo + '</td>');
                 novaLinha.append('<td><img class="photo-icon" src="' + produto.imagemPrincipal + '"></td>');
                 novaLinha.append('<td>' + produto.nomeProduto + '</td>');
@@ -132,6 +132,7 @@ function pesquisarProduto() {
                 novaLinha.append('<td>R$ ' + produto.preco + '</td>');
                 novaLinha.append('<td class="acao ativo"><button type="button" class="btn" data-id="' + produto.id + '" onclick="ativarDesativar(' + produto.id + ')">' + (produto.ativo ? 'Ativo' : 'Inativo') + '</button></td>');
                 novaLinha.append('<td class="acao"><button type="button" class="btn btn-primary" onclick="editarProduto(' + produto.id + ')">Editar</button></td>');
+                novaLinha.append('<td class="acao"><button type="button" class="btn btn-primary" onclick="editarProduto(' + produto.id + ')">Editar</button> <button type="button" class="btn btn-primary" onclick="visualizarProduto(' + produto.id + ')">Visualizar</button></td>');
                 $('tbody').append(novaLinha);
 
                 var button = novaLinha.find('button[data-id="' + produto.id + '"]');
@@ -288,7 +289,7 @@ function fecharModal() {
     $('modalEditar').modal('dispose');
 }
 
-// footer
+
 function updatePagination(totalItems) {
     const itemsPerPage = 10;
     const totalPages = Math.ceil(totalItems / itemsPerPage);

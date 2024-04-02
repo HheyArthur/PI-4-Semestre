@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import com.pagbet4.pagbet4.entidades.Produto;
 import com.pagbet4.pagbet4.repositorio.RepoProduto;
@@ -32,8 +35,8 @@ public class ControladorProduto {
 
     @GetMapping
     public List<Produto> listarProdutos() {
-        List<Produto> produtos = repoProduto.findAll();
-        Collections.reverse(produtos);
+        Pageable pageable = PageRequest.of(0, 11, Sort.by(Sort.Direction.DESC, "id"));
+        List<Produto> produtos = repoProduto.findAll(pageable).getContent();
         return produtos;
     }
 
