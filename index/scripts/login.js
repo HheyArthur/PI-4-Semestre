@@ -12,7 +12,8 @@ function loginUser() {
     url: "http://localhost:8080/usuarios/getUser/" + user.email,
     success: function (data) {
       let funcao = data.funcao;
-      if (funcao == "admin" || funcao == "administrador") {
+      console.log(funcao);
+      if (funcao === "admin" || funcao === "administrador") {
         $.ajax({
           type: "POST",
           url: "http://localhost:8080/usuarios/login",
