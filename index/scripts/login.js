@@ -1,11 +1,18 @@
+let alertaExibido = false;
+
 function loginUser() {
   var email = document.getElementById("typeEmailX").value;
   var senha = document.getElementById("senha").value;
-
+  alertaExibido = false;
   var user = {
     email: email,
     senha: senha
   };
+
+  if (email === "" || senha === "") {
+    alert("Preencha todos os campos");
+    return;
+  }
 
   $.ajax({
     type: "GET",
@@ -26,10 +33,13 @@ function loginUser() {
           },
           error: function (xhr, status, erro) {
             alert("Erro ao logar: " + xhr.responseText);
+            if (!alertaExibido) { // Passo 2
+              alert("Erro ao logar: " + xhr.responseText);
+              alertaExibido = true; // Passo 3
+            }
           }
         });
-      }
-      if (funcao == "estoquista") {
+      } else if (funcao == "estoquista") {
         $.ajax({
           type: "POST",
           url: "http://localhost:8080/usuarios/login",
@@ -41,9 +51,18 @@ function loginUser() {
             window.location.href = "http://127.0.0.1:5500/index/HTML/backoffice.html"
           },
           error: function (xhr, status, erro) {
-            console.log("Erro ao logar: " + xhr.responseText);
+            if (!alertaExibido) { // Passo 2
+              alert("Erro ao logar: " + xhr.responseText);
+              alertaExibido = true; // Passo 3
+            }
           }
         });
+      }
+    },
+    error: function (xhr, status, erro) {
+      if (!alertaExibido) { // Passo 2
+        alert("Erro ao logar: " + xhr.responseText);
+        alertaExibido = true; // Passo 3
       }
     }
   });
