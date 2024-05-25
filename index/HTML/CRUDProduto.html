@@ -18,13 +18,14 @@
                 <h1>Lista Produtos</h1>
             </div>
             <div id="mini-menu">
-                <input id="pesquisaInput" type="text"> <span><button id="pesquisaBtn" type="button"
+                <input id="pesquisaInput" type="text"> 
+                <span><button id="pesquisaBtn" type="button"
                         class="btn btn-primary" onclick="pesquisarProduto()"> Pesquisar </button></span>
                 <button id="cadastrarBtn" class="btn btn-secondary" onclick="openModal()">+</button>
             </div>
         </section>
         <section id="tabelacrud">
-            <table>
+            <table class="table">
                 <thead>
                     <tr>
                         <th>Codigo do Produto</th>
@@ -53,17 +54,6 @@
                     <div class="modal-body">
                         <form id="produtoForm">
                             <img id="preview" src="" style="max-width: 200px; max-height: 200px;" />
-                            <script>
-                                function previewImage(event) {
-                                    var input = event.target;
-                                    var reader = new FileReader();
-                                    reader.onload = function () {
-                                        var imgElement = document.getElementById("preview");
-                                        imgElement.src = reader.result;
-                                    };
-                                    reader.readAsDataURL(input.files[0]);
-                                }
-                            </script>
                             <input id="m-imagemProdPrev" type="file" accept="image/*" onchange="previewImage(event)" />
                             <label for="m-nomeprodCad" type="text">Nome Produto</label>
                             <input id="m-nomeprodCad" type="text" required />
@@ -95,17 +85,6 @@
                     <div class="modal-body">
                         <form id="produtoForm">
                             <img id="m-imagemProdEdit" src="" />
-                            <script>
-                                function previewImage(event) {
-                                    var input = event.target;
-                                    var reader = new FileReader();
-                                    reader.onload = function () {
-                                        var imgElement = document.getElementById("m-imagemProdEdit");
-                                        imgElement.src = reader.result;
-                                    };
-                                    reader.readAsDataURL(input.files[0]);
-                                }
-                            </script>
                             <input id="m-imagemProdPrevEdit" type="file" accept="image/*"
                                 onchange="previewImage(event)" />
                             <label for="m-nomeprodEdit" type="text">Nome Produto</label>

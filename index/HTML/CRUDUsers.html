@@ -13,18 +13,18 @@
 
 <body>
     <div class="container">
-        <div class="header">
+        <header class="header">
             <span>Lista de Usuarios</span>
-        </div>
-        <div class="pesquisarIncluir">
+        </header>
+        <section class="pesquisarIncluir">
             <input id="pesquisaInput" type="text">
             <span>
                 <button class="btnPesquisar" id="pesquisaBtn" type="button" onclick="pesquisarUsuario()"> Pesquisar </button>
             </span>
             <button onclick="openModal()" id="new">Incluir</i></button>
-        </div>
-        <div class="divTable">
-            <table>
+        </section>
+        <section class="divTable">
+            <table class="table">
                 <thead>
                     <tr>
                         <th>Nome</th>
@@ -37,7 +37,7 @@
                 <tbody>
                 </tbody>
             </table>
-        </div>
+        </section>
         <div class="modal-container">
             <div class="modal">
                 <form id="usuarioForm">

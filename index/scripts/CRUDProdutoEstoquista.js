@@ -4,7 +4,7 @@ $(document).ready(function () {
 
 function carregarProduto() {
     $.ajax({
-        url: 'http://localhost:8080/produtos', // Insira a URL do seu backend aqui
+        url: 'http://localhost:8080/produtos', // URL do seu backend
         method: 'GET',
         success: function (data) {
             $('tbody').empty();
@@ -246,8 +246,8 @@ function openModalEditar() {
 }
 
 function fecharModal() {
-    $('modalprod').modal('dispose');
-    $('modalEditar').modal('dispose');
+    $('#modalprod').modal('dispose');
+    $('#modalEditar').modal('dispose');
 }
 
 // footer
