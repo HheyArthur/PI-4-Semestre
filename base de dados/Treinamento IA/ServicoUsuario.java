@@ -44,10 +44,6 @@ public class ServicoUsuario {
     }
 
     private boolean isUsuarioLogado(Usuario usuario, HttpSession session) {
-        // Verifica se a sessão é válida antes de acessar os atributos
-        if (session == null || session.getAttributeNames() == null) {
-            return false;
-        }
         Enumeration<String> sessionAttributeNames = session.getAttributeNames();
         while (sessionAttributeNames.hasMoreElements()) {
             String attributeName = sessionAttributeNames.nextElement();
