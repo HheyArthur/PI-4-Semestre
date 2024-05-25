@@ -14,6 +14,18 @@ $(document).ready(function () {
 
 // Função para logout
 function sair() {
+    // Limpa o localStorage
     localStorage.clear();
-    window.location.href = "http://127.0.0.1:5500/index/HTML/telalogin.html";
+    // Faz uma requisição AJAX para o endpoint de logout
+    $.ajax({
+        url: 'http://localhost:8080/usuarios/logout', // Endereço do seu endpoint de logout
+        type: 'POST',
+        success: function(data) {
+            // Redireciona para a página de login após o logout
+            window.location.href = "http://localhost:8080/HTML/telalogin.html";
+        },
+        error: function(error) {
+            console.error('Erro ao realizar logout:', error);
+        }
+    });
 }

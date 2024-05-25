@@ -53,7 +53,7 @@ function realizarLogin(user, funcao) {
             localStorage.setItem("funcao", funcao);
 
             // Redireciona para a página do backoffice
-            window.location.href = "http://127.0.0.1:5500/index/HTML/backoffice.html";
+            window.location.href = "http://localhost:8080/HTML/backoffice.html";
         },
         error: function (xhr, status, erro) {
             if (!alertaExibido) {
@@ -64,19 +64,4 @@ function realizarLogin(user, funcao) {
     });
 }
 
-// Funções para abrir e fechar os modais
-function Openmodal() {
-    document.getElementById("myPopup").style.display = "block";
-}
-
-function OpenmodalEstoquista() {
-    document.getElementById("myPopupEstoquista").style.display = "block";
-}
-
-function Closemodal() {
-    document.getElementById("myPopup").style.display = "none";
-    document.getElementById("myPopupEstoquista").style.display = "none";
-}
-
-// Adiciona evento de clique no botão "Login"
 document.getElementById("loginBtn").addEventListener("click", loginUser);

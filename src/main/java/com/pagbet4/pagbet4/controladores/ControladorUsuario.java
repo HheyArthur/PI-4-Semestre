@@ -36,7 +36,8 @@ public class ControladorUsuario {
     private final ServicoUsuario servicoUsuario;
 
     @Autowired
-    public ControladorUsuario(RepoUsuario repoUsuario, ServicoEncriptarSenha servicoEncriptarSenha, ServicoUsuario servicoUsuario) {
+    public ControladorUsuario(RepoUsuario repoUsuario, ServicoEncriptarSenha servicoEncriptarSenha,
+            ServicoUsuario servicoUsuario) {
         this.repoUsuario = repoUsuario;
         this.servicoEncriptarSenha = servicoEncriptarSenha;
         this.servicoUsuario = servicoUsuario;
@@ -78,6 +79,11 @@ public class ControladorUsuario {
         return usuariosLogados;
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(HttpSession session) {
+        return servicoUsuario.logout(session);
+    }
+
     @PostMapping("/cadastro")
     public ResponseEntity<?> addUsuario(@RequestBody Usuario usuario) {
         return servicoUsuario.cadastrarUsuario(usuario);
@@ -89,7 +95,7 @@ public class ControladorUsuario {
         return repoUsuario.findByEmail(email);
     }
 
-        @GetMapping("/pesquisa/{nome}")
+    @GetMapping("/pesquisa/{nome}")
     public List<Usuario> pesquisaUsuarioNome(@PathVariable String nome) {
         List<Usuario> usuarios = repoUsuario.findAllByNomeContaining(nome);
         return usuarios;
