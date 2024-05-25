@@ -53,18 +53,6 @@ public class ControladorUsuario {
         return servicoUsuario.login(usuario, session);
     }
 
-    private boolean isUsuarioLogado(Usuario usuario, HttpSession session) {
-        Enumeration<String> sessionAttributeNames = session.getAttributeNames();
-        while (sessionAttributeNames.hasMoreElements()) {
-            String attributeName = sessionAttributeNames.nextElement();
-            Object attributeValue = session.getAttribute(attributeName);
-            if (attributeValue instanceof Usuario && ((Usuario) attributeValue).getId().equals(usuario.getId())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     @GetMapping("/checkSession")
     public List<Usuario> checkSession(HttpSession session) {
         List<Usuario> usuariosLogados = new ArrayList<>();

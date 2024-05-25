@@ -34,6 +34,7 @@ public class ServicoImagemTest {
     @MockBean
     private RepoProduto repoProduto;
 
+    @SuppressWarnings("null")
     @Test
     public void cadastrarImagem_ComIdProdutoValido_DeveRetornarImagemUrlDTO() {
         ImagemDTO imagemDTO = new ImagemDTO();
