@@ -1,22 +1,21 @@
-let alertaExibido = false;
+let alertaExibido = false; // Declaração global
 
 // Função para realizar o login
 function loginUser() {
     var email = document.getElementById("typeEmailX").value;
     var senha = document.getElementById("senha").value;
-    alertaExibido = false;
     var user = {
         email: email,
         senha: senha
     };
 
-    // Validação dos campos
+    // Validação dos campos (antes da requisição AJAX)
     if (email === "" || senha === "") {
         alert("Preencha todos os campos");
-        return;
+        return; // Sai da função se os campos estiverem vazios
     }
 
-    // Busca as informações do usuário
+    // Busca as informações do usuário (após a validação)
     $.ajax({
         type: "GET",
         url: "http://localhost:8080/usuarios/getUser/" + user.email,
@@ -34,7 +33,7 @@ function loginUser() {
         error: function (xhr, status, erro) {
             if (!alertaExibido) {
                 alert("Erro ao logar: " + xhr.responseText);
-                alertaExibido = true;
+                alertaExibido = true; // Define alertaExibido como true para evitar o alerta duplo
             }
         }
     });
@@ -58,10 +57,11 @@ function realizarLogin(user, funcao) {
         error: function (xhr, status, erro) {
             if (!alertaExibido) {
                 alert("Erro ao logar: " + xhr.responseText);
-                alertaExibido = true;
+                alertaExibido = true; // Define alertaExibido como true para evitar o alerta duplo
             }
         }
     });
 }
 
+// Adiciona evento de clique no botão "Login"
 document.getElementById("loginBtn").addEventListener("click", loginUser);

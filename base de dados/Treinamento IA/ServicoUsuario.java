@@ -2,7 +2,6 @@ package com.pagbet4.pagbet4.servicos;
 
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,6 +43,10 @@ public class ServicoUsuario {
     }
 
     private boolean isUsuarioLogado(Usuario usuario, HttpSession session) {
+        // Verifica se a sessão é válida antes de acessar os atributos
+        if (session == null || session.getAttributeNames() == null) {
+            return false;
+        }
         Enumeration<String> sessionAttributeNames = session.getAttributeNames();
         while (sessionAttributeNames.hasMoreElements()) {
             String attributeName = sessionAttributeNames.nextElement();
@@ -122,5 +125,14 @@ public class ServicoUsuario {
             return ResponseEntity.ok(repoUsuario.save(existingUsuario));
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Dados inválidos");
+    }
+
+    public ResponseEntity<String> logout(HttpSession session) {
+        if (session != null) {
+            session.invalidate();
+            return ResponseEntity.ok("Logout realizado com sucesso.");
+        } else {
+            return ResponseEntity.badRequest().body("Nenhuma sessão ativa para logout.");
+        }
     }
 }
