@@ -9,7 +9,13 @@ function loginUser() {
         senha: senha
     };
 
-    // Busca as informações do usuário (após a validação)
+    // Validação dos campos (antes da requisição AJAX)
+    if (email === "" || senha === "") {
+        alert("Preencha todos os campos");
+        return; // Sai da função se os campos estiverem vazios
+    }
+
+    // Busca as informações do usuário e realiza o login em uma única requisição
     $.ajax({
         type: "GET",
         url: "http://localhost:8080/usuarios/getUser/" + user.email,
@@ -17,11 +23,33 @@ function loginUser() {
             let funcao = data.funcao;
             console.log(funcao);
 
-            // Verifica a função do usuário e redireciona para a página correta
-            if (funcao === "admin" || funcao === "administrador") {
-                realizarLogin(user, funcao);
-            } else if (funcao === "estoquista") {
-                realizarLogin(user, funcao);
+            // Verifica a função do usuário e realiza o login se a função for válida
+            if (funcao === "admin" || funcao === "administrador" || funcao === "estoquista") {
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8080/usuarios/login",
+                    data: JSON.stringify(user),
+                    contentType: "application/json",
+                    success: function (response) {
+                        // Salva as informações do usuário no localStorage
+                        localStorage.setItem("email", user.email);
+                        localStorage.setItem("funcao", funcao);
+
+                        // Redireciona para a página do backoffice
+                        window.location.href = "http://localhost:8080/HTML/backoffice.html";
+                    },
+                    error: function (xhr, status, erro) {
+                        if (!alertaExibido) {
+                            alert("Erro ao logar: " + xhr.responseText);
+                            alertaExibido = true; // Define alertaExibido como true para evitar o alerta duplo
+                        }
+                    }
+                });
+            } else {
+                if (!alertaExibido) {
+                    alert("Usuário não autorizado.");
+                    alertaExibido = true; // Define alertaExibido como true para evitar o alerta duplo
+                }
             }
         },
         error: function (xhr, status, erro) {
@@ -32,30 +60,5 @@ function loginUser() {
         }
     });
 }
-
-// Função para realizar o login
-function realizarLogin(user, funcao) {
-    $.ajax({
-        type: "POST",
-        url: "http://localhost:8080/usuarios/login",
-        data: JSON.stringify(user),
-        contentType: "application/json",
-        success: function (response) {
-            // Salva as informações do usuário no localStorage
-            localStorage.setItem("email", user.email);
-            localStorage.setItem("funcao", funcao);
-
-            // Redireciona para a página do backoffice
-            window.location.href = "http://localhost:8080/HTML/backoffice.html";
-        },
-        error: function (xhr, status, erro) {
-            if (!alertaExibido) {
-                alert("Erro ao logar: " + xhr.responseText);
-                alertaExibido = true; // Define alertaExibido como true para evitar o alerta duplo
-            }
-        }
-    });
-}
-
 // Adiciona evento de clique no botão "Login"
 document.getElementById("loginBtn").addEventListener("click", loginUser);
