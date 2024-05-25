@@ -2,11 +2,18 @@ package com.pagbet4.pagbet4.entidades;
 
 import java.math.BigDecimal;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Produto {
@@ -17,10 +24,17 @@ public class Produto {
 
     private String nomeProduto;
     private String descricao;
-    private String imagem = "..\\img\\imagem_indisponivel.png";//imagem indisponivel por padrão
+
+    private String imagemPrincipal = "..\\img\\imagem_indisponivel.png";// imagem indisponivel por padrão
+    
+    @JsonManagedReference
+    @OneToMany(mappedBy = "produto", fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    private List<Imagem> imagens;
 
     private long codigo = 1000 + (Math.round(Math.random() * 9000));
+
     private long quantidade;
+
     private long avaliacao = 0;
     private long qtdAvaliacoes = 0;
 
@@ -101,13 +115,20 @@ public class Produto {
         this.qtdAvaliacoes = qtdAvaliacoes;
     }
 
-    public String getImagem() {
-        return imagem;
+    public String getImagemPrincipal() {
+        return imagemPrincipal != null ? imagemPrincipal : "";
     }
 
-    public void setImagem(String imagem) {
-        this.imagem = imagem;
+    public void setImagemPrincipal(String imagem) {
+        this.imagemPrincipal = imagem;
     }
 
+    public List<Imagem> getImagens() {
+        return imagens;
+    }
+
+    public void setImagens(List<Imagem> imagens) {
+        this.imagens = imagens;
+    }
 
 }

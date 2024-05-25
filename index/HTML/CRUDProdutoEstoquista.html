@@ -18,11 +18,10 @@
             </div>
             <div id="mini-menu">
                 <input id="pesquisaInput" type="text"> <span><button id="pesquisaBtn" type="button" class="btn btn-primary" onclick="pesquisarProduto()"> Pesquisar </button></span>
-                <button id="cadastrarBtn" class="btn btn-secondary" onclick="openModal()">+</button>
             </div>
         </section>
         <section id="tabelacrud">
-            <table>
+            <table class="table">
                 <thead>
                     <tr>
                         <th>Codigo do Produto</th>
@@ -39,48 +38,6 @@
             </table>
         </section>
     </main>
-    <!-- inicio modal Cadastrar-->
-    <section>
-        <div class="modal" id="modalprod" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Cadastrar Produto</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="produtoForm">
-                            <img id="preview" src="" style="max-width: 200px; max-height: 200px;" />
-                            <script>
-                                function previewImage(event) {
-                                    var input = event.target;
-                                    var reader = new FileReader();
-                                    reader.onload = function () {
-                                        var imgElement = document.getElementById("preview");
-                                        imgElement.src = reader.result;
-                                    };
-                                    reader.readAsDataURL(input.files[0]);
-                                }
-                            </script>
-                            <input id="m-imagemProdPrev" type="file" accept="image/*" onchange="previewImage(event)" />
-                            <label for="m-nomeprodCad" type="text">Nome Produto</label>
-                            <input id="m-nomeprodCad" type="text" required />
-                            <label for="m-descricaoProdCad">Descrição do Produto</label>
-                            <textarea id="m-descricaoProdCad" name="descricaoProd" rows="5" cols="50"></textarea>
-                            <label for="m-quantidadeprodCad">Quantidade</label>
-                            <input id="m-quantidadeprodCad" type="number" required />
-                            <label for="m-precoprodCad">Preço</label>
-                            <input id="m-precoprodCad" type="text" required />
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" onclick="cadastrarProduto()">Salvar</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
     <!-- inicio modal Editar -->
     <section>
         <div class="modal" id="modalEditar" tabindex="-1">
@@ -93,17 +50,6 @@
                     <div class="modal-body">
                         <form id="produtoForm">
                             <img id="m-imagemProdEdit" src=""/>
-                            <script>
-                                function previewImage(event) {
-                                    var input = event.target;
-                                    var reader = new FileReader();
-                                    reader.onload = function () {
-                                        var imgElement = document.getElementById("m-imagemProdEdit");
-                                        imgElement.src = reader.result;
-                                    };
-                                    reader.readAsDataURL(input.files[0]);
-                                }
-                            </script>
                             <label for="m-nomeprodEdit" type="text">Nome Produto</label>
                             <input id="m-nomeprodEdit" type="text" disabled>
                             <label for="m-descricaoProdEdit">Descrição do Produto</label>
@@ -122,6 +68,35 @@
             </div>
         </div>
     </section>
+    <section>
+        <!-- Modal -->
+        <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imagemModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content" style="width: 800px; height: 900px;">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="imagemModalLabel">Carrossel de Imagens</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div id="carouselExampleIndicators" class="carousel slide">
+                            <div class="carousel-indicators">
+                                <!-- Indicators will be generated dynamically -->
+                            </div>
+                            <div class="carousel-inner">
+                                <!-- Images will be loaded dynamically -->
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            </button >
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            </button >
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
     <div class="d-flex justify-content-center">
         <ul id="pagination" class="pagination mt-3 mb-0">
         </ul>
@@ -131,6 +106,7 @@
         crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="../scripts/CRUDProduto.js"></script>
     <script src="../scripts/CRUDProdutoEstoquista.js"></script>
 
 </body>

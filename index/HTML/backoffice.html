@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backoffice PagBet4</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../CSS/backoffice_styles.css">
+</head>
+<body>
+
+<header class="cabecalho text-light py-4">
+    <div class="container">
+        <h1>Backoffice</h1>
+        <img src="../img/Logo Grupo.png" alt="" srcset="">
+    </div>
+</header>
+
+<main class="container-fluid mt-3">
+    <div class="row">
+        <div class="col">
+            <nav>
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="inicio-tab" data-toggle="tab" href="#inicio" role="tab" aria-controls="inicio" aria-selected="true">Início</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link adminSection" id="usuarios-tab" data-toggle="tab" href="#usuarios" role="tab" aria-controls="usuarios" aria-selected="false">Usuários</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="produtos-tab" data-toggle="tab" href="#produtos" role="tab" aria-controls="produtos" aria-selected="false">Produtos</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="inicio" role="tabpanel" aria-labelledby="inicio-tab">
+                    <h2>Início</h2>
+                    <p>Usuário: <label id="nomeUsuario"></label></p>
+                    <p>Função: <label id="funcaoUsuario"></label></p>
+                    <button id="logoutBtn" class="btn btn-danger" onclick="sair()">Sair</button>
+                </div>
+                <div class="tab-pane fade adminSection" id="usuarios" role="tabpanel" aria-labelledby="usuarios-tab">
+                    <h2>Usuários</h2>
+                    <a id="pagUsuarios" href="./CRUDUsers.html">Lista de usuários</a>                   
+                </div>
+                <div class="tab-pane fade" id="produtos" role="tabpanel" aria-labelledby="produtos-tab">
+                    <h2>Produtos</h2>
+                    <a id="pagProutos" href="./CRUDProduto.html">Lista de produtos</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- Custom JS -->
+<script src="../scripts/backoffice_script.js"></script>
+</body>
+</html>

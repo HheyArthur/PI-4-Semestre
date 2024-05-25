@@ -1,0 +1,16 @@
+/* Estilos para o carrossel */
+.carousel-container {
+    width: 25rem; /* Largura do carrossel */
+    height: 25rem; /* Altura do carrossel */
+}
+
+
+/* Cor preta para as setas do carrossel */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: rgb(114, 114, 114); /* Define a cor das setas */
+}
+
+.carousel-indicators .active {
+    background-color: rgb(114, 114, 114);
+}
