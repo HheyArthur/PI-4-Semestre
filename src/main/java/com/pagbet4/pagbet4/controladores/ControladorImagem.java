@@ -22,9 +22,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping("/imagens")
 public class ControladorImagem {
 
+    @SuppressWarnings("unused")
     @Autowired
     private RepoImagem repoImagem;
 
+    @SuppressWarnings("unused")
     @Autowired
     private RepoProduto repoProduto;
 

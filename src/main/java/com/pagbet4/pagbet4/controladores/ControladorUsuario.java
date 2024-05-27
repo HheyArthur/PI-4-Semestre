@@ -32,6 +32,7 @@ import jakarta.servlet.http.HttpSession;
 public class ControladorUsuario {
 
     private final RepoUsuario repoUsuario;
+    @SuppressWarnings("unused")
     private final ServicoEncriptarSenha servicoEncriptarSenha;
     private final ServicoUsuario servicoUsuario;
 

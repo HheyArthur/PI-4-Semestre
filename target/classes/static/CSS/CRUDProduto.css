@@ -6,6 +6,11 @@
     gap: 10px;
 }
 
+#pesquisaInput {
+    padding: 10px 20px;
+    width: 100%;
+}
+
 /* Estilos para a tabela */
 #tabelacrud table {
     width: 100%;

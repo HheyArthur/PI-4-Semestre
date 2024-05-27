@@ -15,9 +15,20 @@
         <section id="cabecalho">
             <div>
                 <h1>Lista Produtos</h1>
+                <a href="backoffice.html">
+                    <button class="btn btn-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                            fill="currentColor" class="bi bi-arrow-bar-left" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M12.5 15a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5M10 8a.5.5 0 0 1-.5.5H3.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L3.707 7.5H9.5a.5.5 0 0 1 .5.5" />
+                        </svg> Backoffice</button>
+                </a>
+                <div>
+                    <input id="pesquisaInput" type="text">
+                    <span><button id="pesquisaBtn" type="button" class="btn btn-primary" onclick="pesquisarProduto()">
+                            Pesquisar </button></span>
+                    <button id="cadastrarBtn" class="btn btn-secondary" onclick="openModal()">+</button>
+                </div>
             </div>
-            <div id="mini-menu">
-                <input id="pesquisaInput" type="text"> <span><button id="pesquisaBtn" type="button" class="btn btn-primary" onclick="pesquisarProduto()"> Pesquisar </button></span>
             </div>
         </section>
         <section id="tabelacrud">
@@ -49,15 +60,16 @@
                     </div>
                     <div class="modal-body">
                         <form id="produtoForm">
-                            <img id="m-imagemProdEdit" src=""/>
+                            <img id="m-imagemProdEdit" src="" />
                             <label for="m-nomeprodEdit" type="text">Nome Produto</label>
                             <input id="m-nomeprodEdit" type="text" disabled>
                             <label for="m-descricaoProdEdit">Descrição do Produto</label>
-                            <textarea id="m-descricaoEdit" name="descricaoProdeEdit" rows="5" cols="50" disabled></textarea>
+                            <textarea id="m-descricaoEdit" name="descricaoProdeEdit" rows="5" cols="50"
+                                disabled></textarea>
                             <label for="m-quantidadeprodEdit">Quantidade</label>
                             <input id="m-quantidadeprodEdit" type="number" required min="0" max="9999" />
                             <label for="m-precoprodEdit">Preço</label>
-                            <input id="m-precoprodEdit" type="text"disabled/>
+                            <input id="m-precoprodEdit" type="text" disabled />
                         </form>
                     </div>
                     <div class="modal-footer">
@@ -85,12 +97,14 @@
                             <div class="carousel-inner">
                                 <!-- Images will be loaded dynamically -->
                             </div>
-                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                            <button class="carousel-control-prev" type="button"
+                                data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            </button >
-                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                            </button>
+                            <button class="carousel-control-next" type="button"
+                                data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
                                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            </button >
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -98,7 +112,7 @@
         </div>
     </section>
     <div class="d-flex justify-content-center">
-        <ul id="pagination" class="pagination mt-3 mb-0">
+        <ul id="pagination" class="pagination mt-3 mb-2">
         </ul>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

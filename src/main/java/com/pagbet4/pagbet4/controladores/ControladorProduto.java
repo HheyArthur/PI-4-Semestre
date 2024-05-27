@@ -16,14 +16,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import com.pagbet4.pagbet4.ProdutoPaginadoDTO.ProdutoPaginadoDTO;
 import com.pagbet4.pagbet4.entidades.Produto;
 import com.pagbet4.pagbet4.repositorio.RepoProduto;
 import com.pagbet4.pagbet4.servicos.ServicoProduto;
-
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -37,10 +38,19 @@ public class ControladorProduto {
     private ServicoProduto servicoProduto;
 
     @GetMapping
-    public List<Produto> listarProdutos() {
-        Pageable pageable = PageRequest.of(0, 11, Sort.by(Sort.Direction.DESC, "id"));
+    public ProdutoPaginadoDTO listarProdutos(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
         Page<Produto> produtosPage = repoProduto.findAll(pageable);
-        return produtosPage.getContent();
+
+        return new ProdutoPaginadoDTO(
+                produtosPage.getContent(),
+                produtosPage.getNumber(),
+                produtosPage.getSize(),
+                produtosPage.getTotalElements(),
+                produtosPage.getTotalPages());
     }
 
     @SuppressWarnings("null")
@@ -59,7 +69,6 @@ public class ControladorProduto {
         List<Produto> produtos = repoProduto.findAllByNomeProdutoContaining(nome);
         return produtos;
     }
-    
 
     @PostMapping("/cadastrarProduto")
     public ResponseEntity<?> criarProduto(@RequestBody Produto produto) {
@@ -95,5 +104,5 @@ public class ControladorProduto {
     public void deletarProduto(@PathVariable Long id) {
         repoProduto.deleteById(id);
     }
-    
+
 }
