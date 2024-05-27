@@ -311,8 +311,8 @@ function openModalEditar() {
 
 // Função para fechar o modal
 function fecharModal() {
-    $('#modalprod').modal('dispose');
-    $('#modalEditar').modal('dispose');
+    $('#modalprod').modal('hide'); // Use 'hide' para fechar
+    $('#modalEditar').modal('hide'); // Use 'hide' para fechar
 }
 
 // Função para atualizar a paginação
