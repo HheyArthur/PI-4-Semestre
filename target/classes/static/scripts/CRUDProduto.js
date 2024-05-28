@@ -121,6 +121,13 @@ function ativarDesativar(id) {
     });
 }
 
+// Adiciona evento para realizar a pesquisa ao pressionar "Enter"
+$('#pesquisaInput').keyup(function (event) {
+    if (event.keyCode === 13) { // Verifica se a tecla pressionada foi "Enter"
+        pesquisarProduto(); // Chama a função de pesquisa
+    }
+});
+
 // Função para pesquisar produtos
 function pesquisarProduto() {
     var palavra = document.getElementById('pesquisaInput').value;
@@ -130,13 +137,6 @@ function pesquisarProduto() {
         carregarProduto(currentPage);
         return;
     }
-
-    // Adiciona evento para realizar a pesquisa ao pressionar "Enter"
-    $('#pesquisaInput').keyup(function (event) {
-        if (event.keyCode === 13) { // Verifica se a tecla pressionada foi "Enter"
-            pesquisarProduto(); // Chama a função de pesquisa
-        }
-    });
 
     $.ajax({
         url: 'http://localhost:8080/produtos/pesquisa/' + palavra,
