@@ -8,7 +8,7 @@ function carregarProdutos() {
         method: 'GET',
         success: function (data) {
             $('#produto-grid').empty();
-            data.forEach(function (produto) {
+            data.content.forEach(function (produto) {
                 if (produto.ativo) { // Verifica se o produto está ativo
                     var produtoCard = `
                         <div class="produto">
