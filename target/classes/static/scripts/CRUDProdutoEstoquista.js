@@ -28,7 +28,7 @@ function carregarProduto(page) {
                 newRow.append('<td>' + produto.quantidade + '</td>');
                 newRow.append('<td>R$ ' + produto.preco + '</td>');
                 newRow.append('<td class="acao ativo"><button type="button" class="btn" data-id="' + produto.id + '" onclick="ativarDesativar(' + produto.id + ')">' + (produto.ativo ? 'Ativo' : 'Inativo') + '</button></td>');
-                newRow.append('<td class="acao"><button type="button" class="btn btn-primary" onclick="editarProduto(' + produto.id + ')">Editar</button> <button type="button" class="btn btn-primary" onclick="visualizarProduto(' + produto.id + ')">Visualizar</button></td>');
+                newRow.append('<td class="acao"><button type="button" class="btn btn-primary" onclick="editarProduto(' + produto.id + ')">Editar</button> <button type="button" class="btn btn-info" onclick="visualizarProduto(' + produto.id + ')">Visualizar</button></td>');
 
                 // Adiciona a linha na tabela
                 $('tbody').append(newRow);
@@ -50,6 +50,16 @@ function carregarProduto(page) {
             console.error('Erro ao carregar produtos:', error);
         }
     });
+}
+
+// Função para exibir a pré-visualização da imagem
+function previewImage(event) {
+    var reader = new FileReader();
+    reader.onload = function () {
+        var output = document.getElementById('preview');
+        output.src = reader.result;
+    }
+    reader.readAsDataURL(event.target.files[0]);
 }
 
 // Função para visualizar o produto
@@ -152,7 +162,7 @@ function pesquisarProduto() {
                 novaLinha.append('<td>' + produto.quantidade + '</td>');
                 novaLinha.append('<td>R$ ' + produto.preco + '</td>');
                 novaLinha.append('<td class="acao ativo"><button type="button" class="btn" data-id="' + produto.id + '" onclick="ativarDesativar(' + produto.id + ')">' + (produto.ativo ? 'Ativo' : 'Inativo') + '</button></td>');
-                novaLinha.append('<td class="acao"><button type="button" class="btn btn-primary" onclick="editarProduto(' + produto.id + ')">Editar</button> <button type="button" class="btn btn-primary" onclick="visualizarProduto(' + produto.id + ')">Visualizar</button></td>');
+                novaLinha.append('<td class="acao"><button type="button" class="btn btn-primary" onclick="editarProduto(' + produto.id + ')">Editar</button> <button type="button" class="btn btn-info" onclick="visualizarProduto(' + produto.id + ')">Visualizar</button></td>');
                 $('tbody').append(novaLinha);
 
                 var button = novaLinha.find('button[data-id="' + produto.id + '"]');
@@ -240,52 +250,51 @@ function editarProduto(id) {
 }
 
 // Função para salvar as alterações do produto
-function salvarProdEditado(id) {
-    // Obtém os valores do formulário, incluindo o checkbox
-    var arquivo = $('#m-imagemProdPrevEdit').val(); 
+async function salvarProdEditado(id) {
+    var arquivo = $('#m-imagemProdPrevEdit').val();
     var nomeProduto = $('#m-nomeprodEdit').val();
     var descricao = $('#m-descricaoEdit').val();
     var quantidade = $('#m-quantidadeprodEdit').val();
     var preco = $('#m-precoprodEdit').val();
-    var alterarImagem = $('#alterarImagemCheckbox').is(':checked'); // Verifica o checkbox
-
     var caminho;
 
-    // Verifica se o checkbox "Alterar Imagem" está marcado
-    if (alterarImagem && arquivo) {
-        // Usuário quer enviar uma nova imagem
-        var formato = arquivo.split('\\').pop();
-        caminho = "..\\img\\" + formato;
-    } else {
-        // Mantém a imagem atual
-        caminho = $('#m-imagemProdEdit').attr('src'); 
-    }
-
-    // Crie o objeto com os dados do produto, incluindo o 'caminho' da imagem
-    var produtoAtualizado = {
-        imagemPrincipal: caminho,
-        nomeProduto: nomeProduto,
-        descricao: descricao,
-        quantidade: quantidade,
-        preco: preco
-    };
-
-    $.ajax({
-        url: 'http://localhost:8080/produtos/atualizaProdutoPorId/' + id,
-        method: 'PUT',
-        contentType: 'application/json',
-        data: JSON.stringify(produtoAtualizado),
-        success: function (data) {
-            console.log('Produto atualizado:', data);
-            alert('Produto atualizado com sucesso!');
-            fecharModal();
-            carregarProduto();
-            // limparCampos(); // Se você estiver limpando os campos após a edição
-        },
-        error: function (xhr, status, error) {
-            console.error('Erro ao atualizar o produto:', error);
+    try {
+        if (!arquivo) {
+            // Requisição assíncrona para obter o caminho da imagem atual do produto
+            const response = await $.ajax({
+                url: 'http://localhost:8080/produtos/' + id,
+                method: 'GET'
+            });
+            caminho = response.imagemPrincipal;
+        } else {
+            var formato = arquivo.split('\\').pop();
+            caminho = `../img/${formato}`;
         }
-    });
+
+        // Requisição assíncrona para atualizar o produto
+        const updateResponse = await $.ajax({
+            url: `http://localhost:8080/produtos/atualizaProdutoPorId/${id}`,
+            method: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                imagemPrincipal: caminho,
+                nomeProduto: nomeProduto,
+                descricao: descricao,
+                quantidade: quantidade,
+                preco: preco
+            })
+        });
+
+        console.log('Produto atualizado:', updateResponse);
+        alert('Produto atualizado com sucesso!');
+        fecharModal();
+        carregarProduto(currentPage);
+        limparCampos();
+
+    } catch (error) {
+        console.error('Erro ao atualizar o produto:', error);
+        alert('Erro ao atualizar o produto. Por favor, tente novamente.');
+    }
 }
 
 // Função para limpar os campos do modal

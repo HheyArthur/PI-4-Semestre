@@ -39,8 +39,15 @@ public class ControladorProduto {
 
     @GetMapping
     public ProdutoPaginadoDTO listarProdutos(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+            @RequestParam(value = "size", defaultValue = "10", required = false) int size) {
+        // Validação básica dos parâmetros
+        if (page < 0) {
+            page = 0; // Define um valor padrão caso a página seja menor que 0
+        }
+        if (size <= 0) {
+            size = 10; // Define um valor padrão caso o tamanho seja menor ou igual a 0
+        }
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
         Page<Produto> produtosPage = repoProduto.findAll(pageable);
