@@ -1,14 +1,23 @@
-// Função para carregar os produtos
+// Variáveis globais para controlar a paginação
+let currentPage = 0; // Começa da página 0
+const itemsPerPage = 5;
+
+// Função para carregar os produtos da página especificada
 function carregarProduto() {
+
+}
+
+
+function carregarProduto(page) {
     $.ajax({
-        url: 'http://localhost:8080/produtos', // URL do seu backend
+        url: `http://localhost:8080/produtos?page=${page}&size=${itemsPerPage}`,
         method: 'GET',
         success: function (data) {
             // Limpa a tabela
             $('tbody').empty();
 
             // Adiciona os produtos na tabela
-            data.forEach(function (produto) {
+            data.content.forEach(function (produto) {
                 // Cria uma nova linha na tabela
                 var newRow = $('<tr class="item">');
 
@@ -19,7 +28,7 @@ function carregarProduto() {
                 newRow.append('<td>' + produto.quantidade + '</td>');
                 newRow.append('<td>R$ ' + produto.preco + '</td>');
                 newRow.append('<td class="acao ativo"><button type="button" class="btn" data-id="' + produto.id + '" onclick="ativarDesativar(' + produto.id + ')">' + (produto.ativo ? 'Ativo' : 'Inativo') + '</button></td>');
-                newRow.append('<td class="acao"><button type="button" class="btn btn-primary" onclick="editarProduto(' + produto.id + ')">Editar</button> <button type="button" class="btn btn-primary" onclick="visualizarProduto(' + produto.id + ')">Visualizar</button></td>');
+                newRow.append('<td class="acao"><button type="button" class="btn btn-primary" onclick="editarProduto(' + produto.id + ')">Editar</button> <button type="button" class="btn btn-info" onclick="visualizarProduto(' + produto.id + ')">Visualizar</button></td>');
 
                 // Adiciona a linha na tabela
                 $('tbody').append(newRow);
@@ -34,11 +43,23 @@ function carregarProduto() {
                     button.removeClass('btn-success');
                 }
             });
+            // Atualiza a paginação
+            updatePagination(data.totalPages);
         },
         error: function (xhr, status, error) {
             console.error('Erro ao carregar produtos:', error);
         }
     });
+}
+
+// Função para exibir a pré-visualização da imagem
+function previewImage(event) {
+    var reader = new FileReader();
+    reader.onload = function () {
+        var output = document.getElementById('preview');
+        output.src = reader.result;
+    }
+    reader.readAsDataURL(event.target.files[0]);
 }
 
 // Função para visualizar o produto
@@ -100,13 +121,20 @@ function ativarDesativar(id) {
     });
 }
 
+// Adiciona evento para realizar a pesquisa ao pressionar "Enter"
+$('#pesquisaInput').keyup(function (event) {
+    if (event.keyCode === 13) { // Verifica se a tecla pressionada foi "Enter"
+        pesquisarProduto(); // Chama a função de pesquisa
+    }
+});
+
 // Função para pesquisar produtos
 function pesquisarProduto() {
     var palavra = document.getElementById('pesquisaInput').value;
 
     // Se a pesquisa estiver vazia, recarrega todos os produtos
     if (palavra === '') {
-        carregarProduto();
+        carregarProduto(currentPage);
         return;
     }
 
@@ -134,7 +162,7 @@ function pesquisarProduto() {
                 novaLinha.append('<td>' + produto.quantidade + '</td>');
                 novaLinha.append('<td>R$ ' + produto.preco + '</td>');
                 novaLinha.append('<td class="acao ativo"><button type="button" class="btn" data-id="' + produto.id + '" onclick="ativarDesativar(' + produto.id + ')">' + (produto.ativo ? 'Ativo' : 'Inativo') + '</button></td>');
-                novaLinha.append('<td class="acao"><button type="button" class="btn btn-primary" onclick="editarProduto(' + produto.id + ')">Editar</button> <button type="button" class="btn btn-primary" onclick="visualizarProduto(' + produto.id + ')">Visualizar</button></td>');
+                novaLinha.append('<td class="acao"><button type="button" class="btn btn-primary" onclick="editarProduto(' + produto.id + ')">Editar</button> <button type="button" class="btn btn-info" onclick="visualizarProduto(' + produto.id + ')">Visualizar</button></td>');
                 $('tbody').append(novaLinha);
 
                 var button = novaLinha.find('button[data-id="' + produto.id + '"]');
@@ -194,7 +222,7 @@ function editarProduto(id) {
         success: function (data) {
             // Preenche os campos do modal com os dados do produto
             $('#m-imagemProdEdit').attr('src', data.imagemPrincipal);
-            $('#m-imagemProdPrevEdit').val(data.imagemPrincipal);
+            //$('#m-imagemProdPrevEdit').val(data.imagemPrincipal);
             $('#m-nomeprodEdit').val(data.nomeProduto);
             $('#m-descricaoEdit').val(data.descricao);
             $('#m-quantidadeprodEdit').val(data.quantidade);
@@ -222,7 +250,7 @@ function editarProduto(id) {
 }
 
 // Função para salvar as alterações do produto
-function salvarProdEditado(id) {
+async function salvarProdEditado(id) {
     var arquivo = $('#m-imagemProdPrevEdit').val();
     var nomeProduto = $('#m-nomeprodEdit').val();
     var descricao = $('#m-descricaoEdit').val();
@@ -230,43 +258,43 @@ function salvarProdEditado(id) {
     var preco = $('#m-precoprodEdit').val();
     var caminho;
 
-    // Verifica se foi selecionada uma nova imagem
-    if (arquivo == '' || arquivo == null || arquivo == undefined) {
-        $.ajax({
-            url: 'http://localhost:8080/produtos/' + id,
-            method: 'GET',
-            async: false,
-            success: function (data) {
-                caminho = data.imagemPrincipal;
-            }
-        });
-    } else {
-        var formato = arquivo.split('\\').pop();
-        caminho = "..\\img\\" + formato;
-    }
-
-    $.ajax({
-        url: 'http://localhost:8080/produtos/atualizaProdutoPorId/' + id,
-        method: 'PUT',
-        contentType: 'application/json',
-        data: JSON.stringify({
-            imagemPrincipal: caminho,
-            nomeProduto: nomeProduto,
-            descricao: descricao,
-            quantidade: quantidade,
-            preco: preco
-        }),
-        success: function (data) {
-            console.log('Produto atualizado:', data);
-            alert('Produto atualizado com sucesso!');
-            fecharModal();
-            carregarProduto();
-            limparCampos();
-        },
-        error: function (xhr, status, error) {
-            console.error('Erro ao atualizar o produto:', error);
+    try {
+        if (!arquivo) {
+            // Requisição assíncrona para obter o caminho da imagem atual do produto
+            const response = await $.ajax({
+                url: 'http://localhost:8080/produtos/' + id,
+                method: 'GET'
+            });
+            caminho = response.imagemPrincipal;
+        } else {
+            var formato = arquivo.split('\\').pop();
+            caminho = `../img/${formato}`;
         }
-    });
+
+        // Requisição assíncrona para atualizar o produto
+        const updateResponse = await $.ajax({
+            url: `http://localhost:8080/produtos/atualizaProdutoPorId/${id}`,
+            method: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                imagemPrincipal: caminho,
+                nomeProduto: nomeProduto,
+                descricao: descricao,
+                quantidade: quantidade,
+                preco: preco
+            })
+        });
+
+        console.log('Produto atualizado:', updateResponse);
+        alert('Produto atualizado com sucesso!');
+        fecharModal();
+        carregarProduto(currentPage);
+        limparCampos();
+
+    } catch (error) {
+        console.error('Erro ao atualizar o produto:', error);
+        alert('Erro ao atualizar o produto. Por favor, tente novamente.');
+    }
 }
 
 // Função para limpar os campos do modal
@@ -292,43 +320,50 @@ function openModalEditar() {
 
 // Função para fechar o modal
 function fecharModal() {
-    $('#modalprod').modal('dispose');
-    $('#modalEditar').modal('dispose');
+    $('#modalprod').modal('hide'); // Use 'hide' para fechar
+    $('#modalEditar').modal('hide'); // Use 'hide' para fechar
 }
 
 // Função para atualizar a paginação
-function updatePagination(totalItems) {
-    const itemsPerPage = 10;
-    const totalPages = Math.ceil(totalItems / itemsPerPage);
+function updatePagination(totalPages) {
     const paginationElement = document.getElementById('pagination');
-
-    paginationElement.innerHTML = ''; // Limpar elementos existentes
+    paginationElement.innerHTML = ''; // Limpa elementos existentes
 
     if (totalPages > 1) {
         // Adiciona botão 'Anterior'
-        paginationElement.innerHTML += `<li id="previous" class="disabled page-item"><a href="#" class="page-link">‹</a></li>`;
+        if (currentPage > 0) {
+            paginationElement.innerHTML += `<li class="page-item"><a href="#" class="page-link" data-page="${currentPage - 1}">‹</a></li>`;
+        } else {
+            paginationElement.innerHTML += `<li class="page-item disabled"><a href="#" class="page-link">‹</a></li>`;
+        }
 
         // Adiciona números das páginas
-        for (let page = 1; page <= totalPages; page++) {
-            paginationElement.innerHTML += `<li class="page-item"><a href="#" class="page-link">${page}</a></li>`;
+        for (let page = 0; page < totalPages; page++) {
+            if (page === currentPage) {
+                paginationElement.innerHTML += `<li class="page-item active"><a href="#" class="page-link" data-page="${page}">${page + 1}</a></li>`;
+            } else {
+                paginationElement.innerHTML += `<li class="page-item"><a href="#" class="page-link" data-page="${page}">${page + 1}</a></li>`;
+            }
         }
 
         // Adiciona botão 'Próximo'
-        paginationElement.innerHTML += `<li id="next" class="page-item"><a href="#" class="page-link">›</a></li>`;
-        paginationElement.innerHTML += `<li id="last" class="page-item"><a href="#" class="page-link">»</a></li>`;
-    } else {
-        // Se houver apenas uma página, desabilita os botões 'Anterior' e 'Próximo'
-        paginationElement.innerHTML += `<li id="previous" class="disabled page-item"><a href="#" class="page-link">‹</a></li>`;
-        paginationElement.innerHTML += `<li class="active page-item"><a href="#" class="page-link">1</a></li>`;
-        paginationElement.innerHTML += `<li id="next" class="disabled page-item"><a href="#" class="page-link">›</a></li>`;
+        if (currentPage < totalPages - 1) {
+            paginationElement.innerHTML += `<li class="page-item"><a href="#" class="page-link" data-page="${currentPage + 1}">›</a></li>`;
+        } else {
+            paginationElement.innerHTML += `<li class="page-item disabled"><a href="#" class="page-link">›</a></li>`;
+        }
     }
+
+    // Adiciona evento de clique para os links de paginação
+    $('.page-link').click(function (event) {
+        event.preventDefault(); // Impede o comportamento padrão do link
+        const page = parseInt($(this).data('page'));
+        currentPage = page;
+        carregarProduto(currentPage);
+    });
 }
 
-// Inicializa a paginação com o número total de itens
-const totalItems = 10;
-updatePagination(totalItems);
-
-// Carrega os produtos ao carregar a página
+// Carrega os produtos da primeira página ao carregar a página
 $(document).ready(function () {
-    carregarProduto();
+    carregarProduto(currentPage);
 });

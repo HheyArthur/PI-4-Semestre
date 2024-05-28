@@ -1,7 +1,5 @@
 package com.pagbet4.pagbet4.controladores;
 
-import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,14 +16,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import com.pagbet4.pagbet4.ProdutoPaginadoDTO.ProdutoPaginadoDTO;
 import com.pagbet4.pagbet4.entidades.Produto;
 import com.pagbet4.pagbet4.repositorio.RepoProduto;
 import com.pagbet4.pagbet4.servicos.ServicoProduto;
-
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -39,10 +38,26 @@ public class ControladorProduto {
     private ServicoProduto servicoProduto;
 
     @GetMapping
-    public List<Produto> listarProdutos() {
-        Pageable pageable = PageRequest.of(0, 11, Sort.by(Sort.Direction.DESC, "id"));
+    public ProdutoPaginadoDTO listarProdutos(
+            @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+            @RequestParam(value = "size", defaultValue = "10", required = false) int size) {
+        // Validação básica dos parâmetros
+        if (page < 0) {
+            page = 0; // Define um valor padrão caso a página seja menor que 0
+        }
+        if (size <= 0) {
+            size = 10; // Define um valor padrão caso o tamanho seja menor ou igual a 0
+        }
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
         Page<Produto> produtosPage = repoProduto.findAll(pageable);
-        return produtosPage.getContent();
+
+        return new ProdutoPaginadoDTO(
+                produtosPage.getContent(),
+                produtosPage.getNumber(),
+                produtosPage.getSize(),
+                produtosPage.getTotalElements(),
+                produtosPage.getTotalPages());
     }
 
     @SuppressWarnings("null")
@@ -61,7 +76,6 @@ public class ControladorProduto {
         List<Produto> produtos = repoProduto.findAllByNomeProdutoContaining(nome);
         return produtos;
     }
-    
 
     @PostMapping("/cadastrarProduto")
     public ResponseEntity<?> criarProduto(@RequestBody Produto produto) {
@@ -97,5 +111,5 @@ public class ControladorProduto {
     public void deletarProduto(@PathVariable Long id) {
         repoProduto.deleteById(id);
     }
-    
+
 }

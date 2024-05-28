@@ -32,6 +32,7 @@ import jakarta.servlet.http.HttpSession;
 public class ControladorUsuario {
 
     private final RepoUsuario repoUsuario;
+    @SuppressWarnings("unused")
     private final ServicoEncriptarSenha servicoEncriptarSenha;
     private final ServicoUsuario servicoUsuario;
 
@@ -51,18 +52,6 @@ public class ControladorUsuario {
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody Usuario usuario, HttpSession session) {
         return servicoUsuario.login(usuario, session);
-    }
-
-    private boolean isUsuarioLogado(Usuario usuario, HttpSession session) {
-        Enumeration<String> sessionAttributeNames = session.getAttributeNames();
-        while (sessionAttributeNames.hasMoreElements()) {
-            String attributeName = sessionAttributeNames.nextElement();
-            Object attributeValue = session.getAttribute(attributeName);
-            if (attributeValue instanceof Usuario && ((Usuario) attributeValue).getId().equals(usuario.getId())) {
-                return true;
-            }
-        }
-        return false;
     }
 
     @GetMapping("/checkSession")

@@ -1,6 +1,6 @@
 package com.pagbet4.pagbet4.controladores;
 
-import java.util.Optional;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -8,10 +8,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pagbet4.pagbet4.entidades.Imagem;
-import com.pagbet4.pagbet4.entidades.Produto;
 import com.pagbet4.pagbet4.imagemDTO.ImagemDTO;
-import com.pagbet4.pagbet4.imagemDTO.ImagemUrlDTO;
+
 import com.pagbet4.pagbet4.repositorio.RepoImagem;
 import com.pagbet4.pagbet4.repositorio.RepoProduto;
 import com.pagbet4.pagbet4.servicos.ServicoImagem;
@@ -24,9 +22,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping("/imagens")
 public class ControladorImagem {
 
+    @SuppressWarnings("unused")
     @Autowired
     private RepoImagem repoImagem;
 
+    @SuppressWarnings("unused")
     @Autowired
     private RepoProduto repoProduto;
 
