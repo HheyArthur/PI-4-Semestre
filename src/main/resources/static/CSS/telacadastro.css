@@ -6,6 +6,10 @@ body {
     background-color: #f4f4f4;
 }
 
+#link__cadastrar {
+    text-decoration: none;
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -14,23 +18,27 @@ body {
 
 /* Cabeçalho */
 header {
-    background-color: #161616; /* Azul escuro similar ao Blaze */
+    background-color: #161616;
+    /* Azul escuro similar ao Blaze */
     color: #fff;
     padding: 20px 0;
     display: flex;
-    justify-content: space-between; /* Alinha os elementos para as pontas */
-    align-items: center; /* Centraliza os elementos verticalmente */
+    justify-content: space-between;
+    /* Alinha os elementos para as pontas */
+    align-items: center;
+    /* Centraliza os elementos verticalmente */
 }
 
 .logo {
-    display: block;
     width: 150px;
+    align-self: center;
 }
 
 /* Novo estilo para o menu de navegação */
 nav {
     display: flex;
-    align-items: center; /* Centraliza verticalmente */
+    align-items: center;
+    /* Centraliza verticalmente */
 }
 
 nav ul {
@@ -52,17 +60,20 @@ nav a {
 /* Estilos para os botões do cabeçalho */
 .login-cadastro {
     display: flex;
-    align-items: center; /* Centraliza verticalmente */
+    align-items: center;
+    /* Centraliza verticalmente */
 }
 
 .login-cadastro button {
-    background-color: #ff7f00; /* Laranja similar ao Blaze */
+    background-color: #ff7f00;
+    /* Laranja similar ao Blaze */
     color: #fff;
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
-    margin-left: 10px; /* Espaçamento entre os botões */
+    margin-left: 10px;
+    /* Espaçamento entre os botões */
 }
 
 /* Seção hero (carrossel) */
@@ -81,7 +92,8 @@ nav a {
 }
 
 .produtos h2 {
-    color: #161616; /* Azul escuro similar ao Blaze */
+    color: #161616;
+    /* Azul escuro similar ao Blaze */
     font-size: 2.5rem;
     text-align: center;
     margin-bottom: 30px;
@@ -90,7 +102,8 @@ nav a {
 /* Grid de produtos */
 .produto-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 colunas */
+    grid-template-columns: repeat(4, 1fr);
+    /* 4 colunas */
     gap: 20px;
 }
 
@@ -115,7 +128,8 @@ nav a {
 }
 
 .btn-comprar {
-    background-color: #ff7f00; /* Laranja similar ao Blaze */
+    background-color: #ff7f00;
+    /* Laranja similar ao Blaze */
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -130,7 +144,8 @@ nav a {
 }
 
 .sobre h2 {
-    color: #161616; /* Azul escuro similar ao Blaze */
+    color: #161616;
+    /* Azul escuro similar ao Blaze */
     font-size: 2.5rem;
     text-align: center;
     margin-bottom: 30px;
@@ -138,7 +153,8 @@ nav a {
 
 /* Rodapé */
 footer {
-    background-color: #161616; /* Azul escuro similar ao Blaze */
+    background-color: #161616;
+    /* Azul escuro similar ao Blaze */
     color: #fff;
     padding: 20px 0;
     text-align: center;
@@ -149,7 +165,8 @@ footer {
     background-color: #fff;
     padding: 10px;
     border-radius: 5px;
-    margin-bottom: 20px; /* Espaço entre a barra de pesquisa e o cabeçalho */
+    margin-bottom: 20px;
+    /* Espaço entre a barra de pesquisa e o cabeçalho */
 }
 
 .search-bar input {
@@ -167,34 +184,37 @@ footer {
 }
 
 .search-bar svg {
-    fill: #000; /* Cor do ícone da lupa */
+    fill: #000;
+    /* Cor do ícone da lupa */
 }
 
 /* Novo estilo para o header */
 header {
-  display: flex;
-  justify-content: space-between; 
-  align-items: center; 
-  padding: 20px; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
 }
 
 /* Estilos para o conteúdo da direita */
 .header-right {
-  display: flex; 
-  align-items: center; 
+    display: flex;
+    align-items: center;
 }
 
-.header-right > * { /* Seleciona todos os elementos filhos diretos de .header-right */
-  margin-left: 10px; 
+.header-right>* {
+    /* Seleciona todos os elementos filhos diretos de .header-right */
+    margin-left: 10px;
 }
 
 /* Estilos para a barra de pesquisa */
 .search-bar {
-  margin-right: auto; /* Empurra a barra de pesquisa para a direita */
+    margin-right: auto;
+    /* Empurra a barra de pesquisa para a direita */
 }
 
 .search-bar input {
-  width: 200px;
+    width: 200px;
 }
 
 /* Estilos para a página do produto */
@@ -285,6 +305,7 @@ header {
     cursor: pointer;
     text-align: center;
 }
+
 /* Seção de cadastro */
 .cadastro {
     background-color: #fff;
@@ -292,7 +313,8 @@ header {
 }
 
 .cadastro h2 {
-    color: #161616; /* Azul escuro similar ao Blaze */
+    color: #161616;
+    /* Azul escuro similar ao Blaze */
     font-size: 2.5rem;
     text-align: center;
     margin-bottom: 30px;
@@ -328,7 +350,8 @@ header {
 .cadastro .btn-cadastrar {
     display: block;
     width: 100%;
-    background-color: #ff7f00; /* Laranja similar ao Blaze */
+    background-color: #ff7f00;
+    /* Laranja similar ao Blaze */
     color: #fff;
     border: none;
     padding: 15px;
@@ -340,5 +363,6 @@ header {
 }
 
 .cadastro .btn-cadastrar:hover {
-    background-color: #e66a00; /* Cor laranja um pouco mais escura para o efeito hover */
+    background-color: #e66a00;
+    /* Cor laranja um pouco mais escura para o efeito hover */
 }
