@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagbet4</title>
+    <link rel="stylesheet" href="../CSS/telacadastro.css">
+    <link rel="shortcut icon" href="../img/logoNovo.png" type="image/x-icon">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="./telaloja.html" class="logo">
+                    <img src="../img/logoNovo.png" alt="Logo da Loja">
+                </a>
+                <div class="header-right">
+                    <nav>
+                        <ul>
+                            <li><a href="./telaloja.html">Home</a></li> <!-- Caminho para a página principal -->
+                            <li><a href="./emconstrucao.html">Sobre Nós</a></li> <!-- Caminho para a página "Sobre Nós" -->
+                            <li><a href="./emconstrucao.html">Contato</a></li> <!-- Caminho para a página "Contato" -->
+                        </ul>
+                    </nav>
+    
+                    <div class="login-cadastro">
+                        <a href="./telalogincliente.html"><button class="btn-login">Entrar</button></a> <!-- Caminho para a página de login -->
+                        <a id="link__cadastrar" href="./telacadastro.html"><button class="btn-cadastro">Cadastrar</button></a> <!-- Caminho para a página de cadastro -->
+                        <a href="#" class="cart-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="cadastro">
+        <div class="container">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="senha">Senha:</label>
+                    <input type="password" id="senha" name="senha" required>
+                </div>
+                <button type="submit" class="btn-cadastrar">Entrar</button>
+            </form>
+        </div>
+    </section>
+
+    <section class="hero">
+        <div class="container">
+            <div class="carousel">
+                <!-- Slides do carrossel de produtos -->
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <!-- Conteúdo do rodapé -->
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    <script src="../scripts/telalogincliente.js"></script>
+</body>
+
+</html>

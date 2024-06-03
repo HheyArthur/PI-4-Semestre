@@ -36,12 +36,12 @@ body {
 
 .logo img {
   display: block;
-  width: 150px;
+  width: 85px;
+  height: 85px;
   position: fixed;
-  top: 20px;
+  top: 10px;
   left: 20px;
-  z-index: 1001;
-  /* Certifique-se de que está acima do header */
+  z-index: 1001; /* Certifique-se de que está acima do header */
 }
 
 .header-right {

@@ -1,0 +1,52 @@
+/* Adicione isso ao seu arquivo CSS (telaloja.css) */
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.cart-item-checkbox {
+    margin-right: 10px;
+}
+
+.cart-item-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-right: 20px;
+}
+
+.cart-item-info {
+    flex-grow: 1;
+}
+
+.cart-item-info h3, .cart-item-info p, .cart-item-info h4 {
+    margin: 5px 0;
+}
+
+.cart-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.btn-confirmar, .btn-acompanhar {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-confirmar {
+    background-color: #ff6600;
+    color: white;
+}
+
+.btn-acompanhar {
+    background-color: #ddd;
+    color: black;
+}

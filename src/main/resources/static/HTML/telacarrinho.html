@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrinho de Compras</title>
+    <link rel="stylesheet" href="../CSS/telacarrinho.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="./telaloja.html" class="logo">
+                    <img src="../img/logoNovo.png" alt="Logo da Loja">
+                </a>
+                <div class="header-right">
+                    <nav>
+                        <ul>
+                            <li><a href="./telaloja.html">Home</a></li>
+                            <li><a href="./emconstrucao.html">Sobre Nós</a></li>
+                            <li><a href="./emconstrucao.html">Contato</a></li>
+                        </ul>
+                    </nav>
+                    <div class="login-cadastro">
+                        <a href="./telalogincliente.html"><button class="btn-login">Entrar</button></a>
+                        <a id="link__cadastrar" href="./telacadastro.html"><button class="btn-cadastro">Cadastrar</button></a>
+                        <a href="./telacarrinho.html" class="cart-icon">
+                            <i class="fas fa-shopping-cart"></i> (<span id="cart-count">0</span>) - R$ <span id="cart-total">0.00</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="carrinho">
+            <div class="container">
+                <h2>Carrinho de Compras</h2>
+                <div id="cart-items"></div>
+                <div class="cart-actions">
+                    <button id="confirmar-entrega" class="btn-confirmar">Confirmar entrega</button>
+                    <button id="acompanhar-pedido" class="btn-acompanhar">Acompanhar Pedido</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <!-- Conteúdo do rodapé -->
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    <script src="../scripts/telacarrinho.js"></script>
+</body>
+</html>
