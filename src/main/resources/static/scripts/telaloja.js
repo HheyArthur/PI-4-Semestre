@@ -1,5 +1,6 @@
 $(document).ready(function () {
     carregarProdutos();
+    atualizarCarrinho(); // Atualiza o carrinho ao carregar a página
 });
 
 function carregarProdutos() {
@@ -17,6 +18,7 @@ function carregarProdutos() {
                             <h4>${"R$ " + produto.preco}</h4>
                             <p>${produto.descricao}</p>
                             <button class="btn-comprar" data-produto-id="${produto.id}" onclick="visualizarProduto(${produto.id})">Ver mais</button>
+                            <button class="btn-add-carrinho" data-produto-id="${produto.id}" onclick="adicionarAoCarrinho(${produto.id}, '${produto.nomeProduto}', ${produto.preco})">Adicionar ao Carrinho</button>
                         </div>
                     `;
                     $('#produto-grid').append(produtoCard);
@@ -66,6 +68,35 @@ function visualizarProduto(id) {
 function visualizarProduto(id) {
     window.location.href = `produtoinfo.html?id=${id}`;
 }
+
+// Função para adicionar um produto ao carrinho
+function adicionarAoCarrinho(id, nome, preco) {
+    var carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+    var produto = carrinho.find(item => item.id === id);
+
+    if (produto) {
+        produto.quantidade += 1;
+    } else {
+        carrinho.push({ id: id, nome: nome, preco: preco, quantidade: 1 });
+    }
+
+    localStorage.setItem('carrinho', JSON.stringify(carrinho));
+    atualizarCarrinho();
+}
+
+// Função para atualizar a exibição do carrinho
+function atualizarCarrinho() {
+    var carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+    var totalItens = carrinho.reduce((total, item) => total + item.quantidade, 0);
+    var totalPreco = carrinho.reduce((total, item) => total + (item.preco * item.quantidade), 0);
+
+    $('.cart-icon').html(`<i class="fas fa-shopping-cart"></i> (${totalItens}) - R$ ${totalPreco.toFixed(2)}`);
+}
+
+
+
+
+
 
 //* funciona mas puxa do crudprodutos dando zoom ...
 
