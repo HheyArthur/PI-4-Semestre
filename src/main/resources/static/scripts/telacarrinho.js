@@ -15,7 +15,7 @@ function carregarCarrinho() {
             var cartItem = `
                 <div class="cart-item">
                     <input type="checkbox" class="cart-item-checkbox" data-index="${index}" checked>
-                    <img src="${item.imagem}" alt="${item.nome}" class="cart-item-image">
+                    <img src="${item.imagemPrincipal}" alt="${item.nome}" class="cart-item-image">
                     <div class="cart-item-info">
                         <h3>${item.nome}</h3>
                         <p>${item.descricao}</p>
