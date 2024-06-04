@@ -1,3 +1,7 @@
+$(document).ready(function () {
+    atualizarCarrinho(); // Atualiza o carrinho ao carregar a página
+});
+
 document.addEventListener('DOMContentLoaded', function () {
     const urlParams = new URLSearchParams(window.location.search);
     const productId = urlParams.get('id');
@@ -61,4 +65,18 @@ function increaseQuantity() {
     quantity += 1;
     document.getElementById('quantity').textContent = quantity;
     updatePriceDisplay(quantity); // Atualiza o valor exibido
+}
+
+// Função para adicionar um produto ao carrinho
+function adicionarAoCarrinho(id, nome, preco) {
+    var carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+    var produto = carrinho.find(item => item.id === id);
+
+    if (produto) {
+        produto.quantidade += 1;
+    } else {
+        carrinho.push({ id: id, nome: nome, preco: preco, quantidade: 1 });
+    }
+
+    localStorage.setItem('carrinho', JSON.stringify(carrinho));
 }

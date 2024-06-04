@@ -16,6 +16,8 @@ body {
   padding: 20px;
 }
 
+
+
 /* Cabeçalho */
 header {
   background-color: #161616;
@@ -187,7 +189,7 @@ nav a {
   margin-bottom: 10px;
 }
 
-.btn-comprar {
+.btn-comprar, .btn-add-carrinho {
   background-color: #ff7f00;
   /* Laranja similar ao Blaze */
   color: #fff;
@@ -195,6 +197,7 @@ nav a {
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
+  margin-top: 15px;
 }
 
 /* Seção sobre nós */

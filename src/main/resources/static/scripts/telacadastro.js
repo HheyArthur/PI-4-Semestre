@@ -1,3 +1,9 @@
+$('#cpf').on('input', function () {
+    var cpf = $(this).val().replace(/\D/g, '');
+    cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+    $(this).val(cpf);
+});
+
 // Evento de envio do formulário para adicionar cliente
 $('#cadastroForm').submit(function (event) {
     event.preventDefault(); // Impede o comportamento padrão do formulário
@@ -5,6 +11,7 @@ $('#cadastroForm').submit(function (event) {
     // Obtém os dados do formulário
     var nome = $('#nome').val();
     var email = $('#email').val();
+    var cpf = $('#cpf').val();
     var senha = $('#senha').val();
     var confirmarSenha = $('#confirmarSenha').val();
 
@@ -14,10 +21,12 @@ $('#cadastroForm').submit(function (event) {
         return;
     }
 
+ 
     // Cria o objeto do cliente
     var cliente = {
         nome: nome,
         email: email,
+        cpf: cpf,
         senha: senha,
         funcao: "cliente", // Define a função como 'cliente'
         ativo: true // Define como ativo
@@ -40,6 +49,16 @@ $('#cadastroForm').submit(function (event) {
         }
     });
 });
+
+
+$('#m-cpf').on('input', function () {
+    var cpf = $(this).val().replace(/\D/g, '');
+    cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+    $(this).val(cpf);
+});
+
+
+
 
 // Carrega os clientes ao carregar a página (se necessário)
 $(document).ready(function () {
