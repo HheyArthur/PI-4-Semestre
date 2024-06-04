@@ -31,6 +31,10 @@ public class Produto {
     @OneToMany(mappedBy = "produto", fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     private List<Imagem> imagens;
 
+    @JsonManagedReference
+    @OneToMany(mappedBy = "produto", fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    private List<ItemCompra> itens;
+
     private long codigo = 1000 + (Math.round(Math.random() * 9000));
 
     private long quantidade;
