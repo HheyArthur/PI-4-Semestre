@@ -15,7 +15,7 @@ function carregarUsuarios() {
                 newRow.append('<td>' + usuario.nome + '</td>');
                 newRow.append('<td>' + usuario.email + '</td>');
                 newRow.append('<td>' + (usuario.funcao ? usuario.funcao : '') + '</td>');
-                newRow.append('<td class="acao ativo">' + (usuario.ativo ? 'Ativo' : 'Inativo') + '</td>');
+                newRow.append('<td class="acao ativo btn-success"><a class="btn btn-success">' + (usuario.ativo ? 'Ativo' : 'Inativo') + '</a></td>');
                 newRow.append('<td class="acao editar" data-id="' + usuario.id + '">Editar</td>');
 
                 // Adiciona a linha na tabela

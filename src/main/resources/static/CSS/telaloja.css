@@ -43,7 +43,7 @@ body {
   position: fixed;
   top: 10px;
   left: 20px;
-  z-index: 1001;
+  z-index: 1001; /* Certifique-se de que está acima do header */
 }
 
 .header-right {
