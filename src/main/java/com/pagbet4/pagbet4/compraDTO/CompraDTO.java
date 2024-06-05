@@ -1,10 +1,20 @@
 package com.pagbet4.pagbet4.compraDTO;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class CompraDTO {
     private Long usuarioId;
     private List<ItemCompraDTO> itens;
+    private BigDecimal valorTotal;
+
+    public BigDecimal getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(BigDecimal valorTotal) {
+        this.valorTotal = valorTotal;
+    }
 
     public Long getUsuarioId() {
         return usuarioId;

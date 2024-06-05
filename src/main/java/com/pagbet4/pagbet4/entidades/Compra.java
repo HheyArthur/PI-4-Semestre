@@ -3,7 +3,10 @@ package com.pagbet4.pagbet4.entidades;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Compra {
@@ -15,14 +18,19 @@ public class Compra {
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
-
-    @OneToMany(mappedBy = "compra", cascade = CascadeType.ALL)
+    
+    @JsonManagedReference
+    @OneToMany(mappedBy = "compra", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER)
     private List<ItemCompra> itens;
 
     private LocalDateTime dataCompra;
 
-    @Column(name = "valor_total", precision = 10, scale = 2)
+    @Column(name = "valor_total", precision = 10, scale = 2, nullable = true)
     private BigDecimal valorTotal;
+
+    public Compra() {
+        this.itens = new ArrayList<>(); // Inicializa a lista itens
+    }
 
     public BigDecimal getValorTotal() {
         return valorTotal;

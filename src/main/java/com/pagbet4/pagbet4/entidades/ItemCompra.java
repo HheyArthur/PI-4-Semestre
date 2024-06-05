@@ -1,5 +1,7 @@
 package com.pagbet4.pagbet4.entidades;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -9,6 +11,7 @@ public class ItemCompra {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "compra_id")
     private Compra compra;
