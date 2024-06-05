@@ -16,7 +16,9 @@ body {
   padding: 20px;
 }
 
-
+.titulo__carrinho {
+  margin-top: 5%;
+}
 
 /* Cabeçalho */
 header {
