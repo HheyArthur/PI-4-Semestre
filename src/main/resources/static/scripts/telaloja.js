@@ -41,7 +41,7 @@ function visualizarProduto(id) {
 
             // Imagem principal
             var indicator = $('<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"></button>');
-            var carouselItem = $('<div class="carousel-item active"><img class="d-block w-100" src="' + produto.imagemPrincipal + '" alt="Imagem Principal"></div>');
+            var carouselItem = $('<div class="carousel-item active"><img class="d-block w-100" src="' + imagem.url + '" alt="Imagem Principal"></div>');
             $('#carouselExampleIndicators .carousel-indicators').append(indicator);
             $('#carouselExampleIndicators .carousel-inner').append(carouselItem);
 
@@ -70,14 +70,14 @@ function visualizarProduto(id) {
 }
 
 // Função para adicionar um produto ao carrinho
-function adicionarAoCarrinho(id, imagemPrincipal, nome, preco) {
+function adicionarAoCarrinho(id, nome, preco) {
     var carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
     var produto = carrinho.find(item => item.id === id);
 
     if (produto) {
         produto.quantidade += 1;
     } else {
-        carrinho.push({ id: id, imagemPrincipal: imagemPrincipal, nome: nome, preco: preco, quantidade: 1 });
+        carrinho.push({ id: id, nome: nome, preco: preco, quantidade: 1 });
     }
 
     localStorage.setItem('carrinho', JSON.stringify(carrinho));
