@@ -1,37 +1,26 @@
 package com.pagbet4.pagbet4.entidades;
 
-import org.antlr.v4.runtime.misc.NotNull;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import javax.validation.constraints.Min;
+import jakarta.persistence.*;
 
 @Entity
 public class ItemCompra {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "compra_id")
     private Compra compra;
 
-    @SuppressWarnings("deprecation")
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "produto_id")
     private Produto produto;
 
-    @NotNull
-    @Min(1)
     private int quantidade;
-
-    @NotNull
-    private double precoUnitario;
 
     public Long getId() {
         return id;
@@ -63,14 +52,6 @@ public class ItemCompra {
 
     public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
-    }
-
-    public double getPrecoUnitario() {
-        return precoUnitario;
-    }
-
-    public void setPrecoUnitario(double precoUnitario) {
-        this.precoUnitario = precoUnitario;
     }
 
 }

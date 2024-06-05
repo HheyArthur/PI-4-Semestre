@@ -45,18 +45,52 @@ $('#confirmar-compra').click(function () {
             itensConfirmar.push(carrinho[index]);
         });
 
-        alert("Compra confirmada, Muito Obrigado e Volte sempre!");
-      } else {
-          alert("Selecione pelo menos um item para confirmar a Compra.");
-      }
-      
+        // Obter o ID do usuário do localStorage (ajuste a chave se necessário)
+        var usuarioId = 26; 
 
-    });
+        // Construir o array de itens no formato correto
+        var itensCompra = itensConfirmar.map(function (item) {
+            return {
+                produtoId: item.id, // Supondo que o ID do produto esteja em item.id
+                quantidade: item.quantidade // Supondo que a quantidade esteja em item.quantidade
+            };
+        });
 
+        // Obter o valor total da compra do elemento HTML
+        var valorTotal = parseFloat($('#cart-total').text().replace(',', '.'));
 
+        // Criar o objeto JSON para enviar na requisição POST
+        var dadosCompra = {
+            usuarioId: usuarioId,
+            itens: itensCompra,
+            valorTotal: valorTotal
+        };
 
-function limparCarrinho() {
-    localStorage.removeItem('carrinho');
-    carregarCarrinho();
-    alert("Carrinho limpo com sucesso!");
-}
+        // Enviar a requisição POST para a API
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8080/compras/criarCompra",
+            contentType: "application/json",
+            data: JSON.stringify(dadosCompra),
+            success: function (response) {
+                console.log("Compra registrada com sucesso:", response);
+                alert("Entrega confirmada!");
+
+                // Limpar o localStorage
+                localStorage.removeItem('carrinho'); 
+
+                history.go(0);
+            },
+            error: function (error) {
+                console.error("Erro ao registrar a compra:", error);
+                alert("Ocorreu um erro ao confirmar a entrega. Por favor, tente novamente.");
+            }
+        });
+    } else {
+        alert("Selecione pelo menos um item para confirmar a entrega.");
+    }
+});
+
+$('#acompanhar-pedido').click(function () {
+    alert("Funcionalidade de acompanhamento de pedido ainda não implementada.");
+});
