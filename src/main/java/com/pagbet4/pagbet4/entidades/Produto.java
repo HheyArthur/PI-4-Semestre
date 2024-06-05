@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -25,14 +26,14 @@ public class Produto {
     private String nomeProduto;
     private String descricao;
 
-    private String imagemPrincipal = "..\\img\\imagem_indisponivel.png";// imagem indisponivel por padrão
+    private String imagemPrincipal = "..\\img\\imagem_indisponivel.png";
     
     @JsonManagedReference
     @OneToMany(mappedBy = "produto", fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     private List<Imagem> imagens;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "produto", fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JsonBackReference
+    @OneToMany(mappedBy = "produto", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<ItemCompra> itens;
 
     private long codigo = 1000 + (Math.round(Math.random() * 9000));

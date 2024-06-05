@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pagbet4.pagbet4.entidades.Compra;
 
+import javax.validation.Valid; // Adiciona validação da requisição
+
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/compras")
@@ -26,8 +28,8 @@ public class ControladorCompra {
         return servicoCompra.listarCompras();
     }
 
-    @PostMapping
-    public ResponseEntity<Compra> cadastrarCompra(@RequestBody Compra compra) {
+    @PostMapping("/cadastrarCompra")
+    public ResponseEntity<?> cadastrarCompra(@Valid @RequestBody Compra compra) { // Adiciona @Valid para validação da requisição
         return servicoCompra.cadastrarCompra(compra);
     }
 
