@@ -93,6 +93,11 @@ function atualizarCarrinho() {
     $('.cart-icon').html(`<i class="fas fa-shopping-cart"></i> (${totalItens}) - R$ ${totalPreco.toFixed(2)}`);
 }
 
+function limparCarrinho() {
+    localStorage.removeItem('carrinho');
+    carregarCarrinho();
+    alert("Carrinho limpo com sucesso!");
+}
 
 
 

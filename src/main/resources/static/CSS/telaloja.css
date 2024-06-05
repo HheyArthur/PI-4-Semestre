@@ -106,7 +106,8 @@ nav a {
 }
 
 .btn-login,
-.btn-cadastro {
+.btn-cadastro,
+.btn-limparcarrinho {
   padding: 5px 10px;
   border: none;
   border-radius: 3px;
@@ -114,7 +115,8 @@ nav a {
   text-decoration: none;
 }
 
-.btn-login {
+.btn-login,
+.btn-limparcarrinho {
   background-color: #fff;
   color: #161616;
 }
@@ -125,7 +127,8 @@ nav a {
 }
 
 .btn-login:hover,
-.btn-cadastro:hover {
+.btn-cadastro:hover,
+.btn-limparcarrinho:hover {
   opacity: 0.8;
 }
 

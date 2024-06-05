@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    atualizarCarrinho(); // Atualiza o carrinho ao carregar a página
+    atualizarCarrinho(); 
 });
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -11,18 +11,22 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-let productPrice = 0; // Variável global para armazenar o preço unitário do produto
+// Variáveis globais para armazenar o preço unitário e a imagem principal do produto
+let productPrice = 0; 
+let productImage = "";
 
 function fetchProductDetails(id) {
     fetch(`http://localhost:8080/produtos/${id}`)
         .then(response => response.json())
         .then(product => {
-            productPrice = product.preco; // Armazena o preço unitário do produto
+            // Armazena o preço unitário e a imagem principal do produto
+            productPrice = product.preco; 
+            productImage = product.imagemPrincipal; 
 
-            document.getElementById('currentImage').src = product.imagemPrincipal;
+            document.getElementById('currentImage').src = productImage;
             document.getElementById('currentImage').alt = product.nomeProduto;
             document.getElementById('productName').textContent = product.nomeProduto;
-            updatePriceDisplay(1); // Atualiza o preço inicial exibido
+            updatePriceDisplay(1); 
 
             const thumbnailContainer = document.getElementById('thumbnailImages');
             thumbnailContainer.innerHTML = '';
@@ -44,11 +48,13 @@ function fetchProductDetails(id) {
 
 function changeImage(imageUrl) {
     document.getElementById('currentImage').src = imageUrl;
+    // Atualiza a imagem principal também para garantir consistência
+    productImage = imageUrl;
 }
 
 function updatePriceDisplay(quantity) {
     const totalPrice = (productPrice * quantity).toFixed(2);
-    document.getElementById('price').textContent = 'R$ ' + totalPrice; // Atualiza o valor exibido
+    document.getElementById('price').textContent = 'R$ ' + totalPrice; 
 }
 
 function decreaseQuantity() {
@@ -56,7 +62,7 @@ function decreaseQuantity() {
     if (quantity > 1) {
         quantity -= 1;
         document.getElementById('quantity').textContent = quantity;
-        updatePriceDisplay(quantity); // Atualiza o valor exibido
+        updatePriceDisplay(quantity); 
     }
 }
 
@@ -64,19 +70,6 @@ function increaseQuantity() {
     let quantity = parseInt(document.getElementById('quantity').textContent);
     quantity += 1;
     document.getElementById('quantity').textContent = quantity;
-    updatePriceDisplay(quantity); // Atualiza o valor exibido
+    updatePriceDisplay(quantity); 
 }
 
-// Função para adicionar um produto ao carrinho
-function adicionarAoCarrinho(id, nome, preco) {
-    var carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
-    var produto = carrinho.find(item => item.id === id);
-
-    if (produto) {
-        produto.quantidade += 1;
-    } else {
-        carrinho.push({ id: id, nome: nome, preco: preco, quantidade: 1 });
-    }
-
-    localStorage.setItem('carrinho', JSON.stringify(carrinho));
-}

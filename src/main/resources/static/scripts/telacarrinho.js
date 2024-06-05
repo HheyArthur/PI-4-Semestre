@@ -34,10 +34,10 @@ function carregarCarrinho() {
     $('#cart-count').text(carrinho.length);
 }
 
-$('#confirmar-entrega').click(function () {
+$('#confirmar-compra').click(function () {
     var carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
     var itensSelecionados = $('.cart-item-checkbox:checked');
-
+    
     if (itensSelecionados.length > 0) {
         var itensConfirmar = [];
         itensSelecionados.each(function () {
@@ -45,13 +45,18 @@ $('#confirmar-entrega').click(function () {
             itensConfirmar.push(carrinho[index]);
         });
 
-        console.log("Itens selecionados para entrega:", itensConfirmar);
-        alert("Entrega confirmada!");
-    } else {
-        alert("Selecione pelo menos um item para confirmar a entrega.");
-    }
-});
+        alert("Compra confirmada, Muito Obrigado e Volte sempre!");
+      } else {
+          alert("Selecione pelo menos um item para confirmar a Compra.");
+      }
+      
 
-$('#acompanhar-pedido').click(function () {
-    alert("Funcionalidade de acompanhamento de pedido ainda não implementada.");
-});
+    });
+
+
+
+function limparCarrinho() {
+    localStorage.removeItem('carrinho');
+    carregarCarrinho();
+    alert("Carrinho limpo com sucesso!");
+}
