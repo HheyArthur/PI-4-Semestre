@@ -2,75 +2,87 @@ package com.pagbet4.pagbet4.controladores;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pagbet4.pagbet4.compraDTO.CompraDTO;
 import com.pagbet4.pagbet4.entidades.Compra;
 import com.pagbet4.pagbet4.entidades.ItemCompra;
 import com.pagbet4.pagbet4.entidades.Produto;
+import com.pagbet4.pagbet4.entidades.Usuario;
 import com.pagbet4.pagbet4.repositorio.RepoCompra;
+import com.pagbet4.pagbet4.repositorio.RepoItemCompra;
 import com.pagbet4.pagbet4.repositorio.RepoProduto;
+import com.pagbet4.pagbet4.repositorio.RepoUsuario;
 
 @Service
 public class ServicoCompra {
 
     @Autowired
-    private RepoCompra repositorioCompra;
+    private RepoCompra repoCompra;
+
+    @Autowired
+    private RepoItemCompra repoItemCompra;
 
     @Autowired
     private RepoProduto repoProduto;
 
-    public List<Compra> listarCompras() {
-        return repositorioCompra.findAll();
-    }
+    @Autowired
+    private RepoUsuario repoUsuario;
 
     @Transactional
-    public ResponseEntity<?> cadastrarCompra(Compra compra) {
-        // Validações
-        if (compra.getUsuario() == null) {
-            return ResponseEntity.badRequest().body("Usuário não informado.");
+    public ResponseEntity<?> registrarCompra(CompraDTO compraDTO) {
+        Optional<Usuario> usuarioOptional = repoUsuario.findById(compraDTO.getUsuarioId());
+        if (usuarioOptional.isEmpty()) {
+            return ResponseEntity.badRequest().body("Usuário não encontrado.");
         }
 
-        // Calcula o valor total da compra
-        BigDecimal valorTotal = BigDecimal.ZERO;
-        for (ItemCompra item : compra.getProdutos()) {
-            if (item.getProduto() == null || item.getQuantidade() <= 0) {
-                return ResponseEntity.badRequest().body("Produto inválido ou quantidade inválida.");
-            }
-            Optional<Produto> produtoOptional = repoProduto.findById(item.getProduto().getId());
-            if (produtoOptional.isPresent()) {
-                Produto produto = produtoOptional.get();
-                item.setPrecoUnitario(produto.getPreco().doubleValue());
-                valorTotal = valorTotal.add(BigDecimal.valueOf(item.getQuantidade() * item.getPrecoUnitario()));
-
-                // Associar o ItemCompra à Compra
-                item.setCompra(compra); // Adiciona esta linha para associar o item à compra
-            } else {
-                return ResponseEntity.badRequest().body("Produto não encontrado.");
-            }
-        }
-
-        // Define a data da compra
+        Compra compra = new Compra();
+        compra.setUsuario(usuarioOptional.get());
         compra.setDataCompra(LocalDateTime.now());
+        compra.setValorTotal(BigDecimal.ZERO);
 
-        // Salva a compra no banco de dados
-        Compra novaCompra = repositorioCompra.save(compra);
-        return ResponseEntity.ok(novaCompra);
-    }
+        compra = repoCompra.save(compra);
 
-    public ResponseEntity<Compra> obterCompra(Long id) {
-        Optional<Compra> compra = repositorioCompra.findById(id);
-        if (compra.isPresent()) {
-            return ResponseEntity.ok(compra.get());
-        } else {
-            return ResponseEntity.notFound().build();
+        BigDecimal valorTotalCompra = BigDecimal.ZERO;
+
+        for (CompraDTO.ItemCompraDTO itemDTO : compraDTO.getItens()) {
+            Optional<Produto> produtoOptional = repoProduto.findById(itemDTO.getProdutoId());
+            if (produtoOptional.isEmpty()) {
+                return ResponseEntity.badRequest().body("Produto não encontrado. ID: " + itemDTO.getProdutoId());
+            }
+
+            Produto produto = produtoOptional.get();
+
+            // Verificar se há quantidade suficiente em estoque
+            if (produto.getQuantidade() < itemDTO.getQuantidade()) {
+                return ResponseEntity.badRequest()
+                        .body("Quantidade insuficiente em estoque para o produto: " + produto.getNomeProduto());
+            }
+
+            ItemCompra itemCompra = new ItemCompra();
+            itemCompra.setCompra(compra);
+            itemCompra.setProduto(produto);
+            itemCompra.setQuantidade(itemDTO.getQuantidade());
+            repoItemCompra.save(itemCompra);
+
+            // Atualizar quantidade em estoque
+            produto.setQuantidade(produto.getQuantidade() - itemDTO.getQuantidade());
+            repoProduto.save(produto);
+
+            valorTotalCompra = valorTotalCompra
+                    .add(produto.getPreco().multiply(BigDecimal.valueOf(itemDTO.getQuantidade())));
         }
+
+        compra.setValorTotal(valorTotalCompra);
+        repoCompra.save(compra);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body("Compra registrada com sucesso!");
     }
 
 }
