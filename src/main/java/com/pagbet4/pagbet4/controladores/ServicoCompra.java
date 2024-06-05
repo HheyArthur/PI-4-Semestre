@@ -6,12 +6,11 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.pagbet4.pagbet4.api.ErroApi;
 import com.pagbet4.pagbet4.entidades.Compra;
 import com.pagbet4.pagbet4.entidades.ItemCompra;
 import com.pagbet4.pagbet4.entidades.Produto;
@@ -35,14 +34,14 @@ public class ServicoCompra {
     public ResponseEntity<?> cadastrarCompra(Compra compra) {
         // Validações
         if (compra.getUsuario() == null) {
-            return ResponseEntity.badRequest().body(new ErroApi("Usuário não informado."));
+            return ResponseEntity.badRequest().body("Usuário não informado.");
         }
 
         // Calcula o valor total da compra
         BigDecimal valorTotal = BigDecimal.ZERO;
         for (ItemCompra item : compra.getProdutos()) {
             if (item.getProduto() == null || item.getQuantidade() <= 0) {
-                return ResponseEntity.badRequest().body(new ErroApi("Produto inválido ou quantidade inválida."));
+                return ResponseEntity.badRequest().body("Produto inválido ou quantidade inválida.");
             }
             Optional<Produto> produtoOptional = repoProduto.findById(item.getProduto().getId());
             if (produtoOptional.isPresent()) {
@@ -53,7 +52,7 @@ public class ServicoCompra {
                 // Associar o ItemCompra à Compra
                 item.setCompra(compra); // Adiciona esta linha para associar o item à compra
             } else {
-                return ResponseEntity.badRequest().body(new ErroApi("Produto não encontrado."));
+                return ResponseEntity.badRequest().body("Produto não encontrado.");
             }
         }
 
